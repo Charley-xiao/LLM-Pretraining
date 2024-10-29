@@ -130,7 +130,7 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         return None
     
 
-def analyze_dependencies(repo_path, language):
+def get_dependency_graph(repo_path, language) -> nx.DiGraph:
     if language == 'python':
         analyzer = PythonDependencyAnalyzer(repo_path)
     elif language == 'java':
@@ -139,4 +139,4 @@ def analyze_dependencies(repo_path, language):
         raise ValueError("Unsupported language for dependency analysis")
     
     analyzer.build_dependency_graph()
-    analyzer.visualize_dependency_graph()
+    return analyzer.graph

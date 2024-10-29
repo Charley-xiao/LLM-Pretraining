@@ -1,1 +1,1 @@
-from .analyzers import PythonDependencyAnalyzer, JavaDependencyAnalyzer, analyze_dependencies
+from .analyzers import PythonDependencyAnalyzer, JavaDependencyAnalyzer, get_dependency_graph
