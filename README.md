@@ -1,4 +1,4 @@
 # LLM-Pretraining
 
 `utils/` 文件夹包含了一些工具函数：
-- `dep_py.py`：Python 依赖分析
+- `depana/` 文件夹包含了一些处理依存分析的工具函数
