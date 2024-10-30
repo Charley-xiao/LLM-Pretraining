@@ -44,7 +44,7 @@ def repo_to_json(repo_path, repo_name, extensions, output_file=None):
         save_to_json(data, output_file)
     return data
 
-def all_repos_to_json(repos, output_dir, setting=2):
+def all_repos_to_json(repos, output_file, setting=2):
     """ Preprocess all repositories and save the data to JSON files """
     data = []
     for repo in repos:
@@ -76,7 +76,7 @@ def all_repos_to_json(repos, output_dir, setting=2):
     if setting == 1:
         random.shuffle(data)
 
-    with open(os.path.join(output_dir, f'data_{setting}.json'), 'w', encoding='utf-8') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
     return data
 
@@ -88,4 +88,4 @@ if __name__ == '__main__':
             "extensions": [".py"]
         }
     ]
-    all_repos_to_json(repos, ".", setting=2)
+    all_repos_to_json(repos, "test.json", setting=2)

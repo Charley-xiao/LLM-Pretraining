@@ -18,14 +18,15 @@ from utils import all_repos_to_json
 
 if not config['use_cache']:
     repos_dict = []
-    for repo in config['repos']:
+    for _repo in config['repos']:
+        repo = _repo[list(_repo.keys())[0]]
         repo_url = repo['url']
         repo_path = repo['path']
         repo_name = repo['name']
         extensions = repo['extensions']
-        if not os.path.exists(os.path.join(config['repos_dir'], f"{repo_path}.json")):
+        if not os.path.exists(os.path.join(config['repos_dir'], f"{repo_path}")):
             print(f"Repo {repo_name} not found in {config['repos_dir']}. Downloading from {repo_url}")
-            os.system(f"git clone {repo_url} {config['repos_dir']}")
+            os.system(f"git clone {repo_url} {os.path.join(config['repos_dir'], repo_name)}")
 
         repos_dict.append({
             "name": repo_name,
@@ -64,8 +65,8 @@ np.save(config['output_tokenized'], tokenized_data)
 flat_data = np.array([token for tokens in tokenized_data for token in tokens], dtype=np.int32)
 num_bytes = flat_data.nbytes
 
-with open(config['output_mmap'], 'wb') as f:
-    f.seek(num_bytes - 1)
-    f.write(b'\x00')
-    with mmap.mmap(f.fileno(), num_bytes, access=mmap.ACCESS_WRITE) as mm:
-        mm[:] = flat_data.tobytes() 
+mmapped_file = np.memmap(config['output_mmap'], dtype=np.int32, mode='w+', shape=flat_data.shape)
+mmapped_file[:] = flat_data[:]
+del mmapped_file
+
+print(f"Data saved to {config['output_tokenized']} and {config['output_mmap']}")
