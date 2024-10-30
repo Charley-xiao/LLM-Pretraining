@@ -1,0 +1,23 @@
+tokenizer: "gpt2"
+max_length: 100000
+truncation: True
+
+use_cache: False
+setting: 2
+data_file: "data/data_2.json"
+repos_dir: "repos"
+repos:
+  - tornado:
+      url: "https://github.com/tornadoweb/tornado"
+      name: "tornado"
+      path: "tornado/tornado"
+      extensions: [".py"]
+  - flask:
+      url: "https://github.com/pallets/flask"
+      name: "flask"
+      path: "flask/src/flask"
+      extensions: [".py"]
+output_file: "data/data_2.json"
+
+output_tokenized: "data/data_2_tokenized.json"
+output_mmap: "data/data_2.mmap"

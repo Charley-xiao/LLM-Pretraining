@@ -1,5 +1,6 @@
 import os
 import json 
+import random 
 
 def collect_files(repo_path, extensions):
     """ Recursively collect all files with specified extensions in the repository """
@@ -30,19 +31,61 @@ def save_to_json(data, output_file):
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
 
-def repo_to_json(repo_path, repo_name, extensions, output_file):
+def repo_to_json(repo_path, repo_name, extensions, output_file=None):
     """ Preprocess a repository and save the data to a JSON file """
     files = collect_files(repo_path, extensions)
+    print(f"Found {len(files)} files in {repo_name}")
     data = []
     for file in files:
         language = file.split('.')[-1]
         entry = create_json_entry(file, repo_name, language)
         data.append(entry)
-    save_to_json(data, output_file)
+    if output_file:
+        save_to_json(data, output_file)
+    return data
+
+def all_repos_to_json(repos, output_dir, setting=2):
+    """ Preprocess all repositories and save the data to JSON files """
+    data = []
+    for repo in repos:
+        repo_path = repo['path']
+        repo_name = repo['name']
+        extensions = repo['extensions']
+        repo_data = repo_to_json(repo_path, repo_name, extensions)
+        print(f"Processed {repo_name} with {len(repo_data)} files")
+        if setting == 3:
+            # Organize files reversely topologically
+            from depana import get_dependency_graph
+            import networkx as nx
+            graph_py = get_dependency_graph(repo_path, 'python')
+            graph_java = get_dependency_graph(repo_path, 'java')
+            graph = nx.compose(graph_py, graph_java)
+            # Eliminate cycles
+            graph.remove_edges_from(nx.selfloop_edges(graph))
+            sorted_files = list(nx.topological_sort(graph))
+            def cmp(file):
+                try:
+                    return -sorted_files.index(file['file_path'])
+                except ValueError:
+                    return len(sorted_files)
+            repo_data = sorted(repo_data, key=cmp)
+        elif setting == 2:
+            random.shuffle(repo_data)
+        data.extend(repo_data)
+    
+    if setting == 1:
+        random.shuffle(data)
+
+    with open(os.path.join(output_dir, f'data_{setting}.json'), 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4)
+    return data
 
 if __name__ == '__main__':
-    repo_path = 'data/repo'
-    repo_name = 'repo'
-    extensions = ['.py', '.java']
-    output_file = 'data/repo.json'
-    repo_to_json(repo_path, repo_name, extensions, output_file)
+    repos = [
+        {
+            "name": "tornado",
+            "path": "D:\\cxsj\\tornado\\tornado",
+            "extensions": [".py"]
+        }
+    ]
+    all_repos_to_json(repos, ".", setting=2)

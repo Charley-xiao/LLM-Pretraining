@@ -30,8 +30,8 @@ class DependencyAnalyzer:
     def visualize_dependency_graph(self):
         """ Visualize the dependency graph using networkx and matplotlib """
         plt.figure(figsize=(16, 12))
-        pos = nx.spring_layout(self.graph)
-        nx.draw(self.graph, pos, with_labels=True, node_size=2000, font_size=10, node_color='skyblue', edge_color='gray')
+        pos = nx.spring_layout(self.graph, iterations=100)
+        nx.draw(self.graph, pos, with_labels=True, node_size=2000, font_size=10, node_color='skyblue', edge_color='black', alpha=0.7)
         plt.show()
 
 
