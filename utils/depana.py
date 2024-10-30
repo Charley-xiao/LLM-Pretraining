@@ -3,6 +3,8 @@ import ast
 import networkx as nx
 import matplotlib.pyplot as plt
 import re
+import pickle 
+
 
 class DependencyAnalyzer:
     def __init__(self, repo_path):
@@ -140,3 +142,8 @@ def get_dependency_graph(repo_path, language) -> nx.DiGraph:
     
     analyzer.build_dependency_graph()
     return analyzer.graph
+
+
+def save_dependency_graph(graph, output_file):
+    with open(output_file, 'wb') as f:
+        pickle.dump(graph, f)
