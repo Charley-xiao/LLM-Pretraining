@@ -21,3 +21,4 @@ output_file: "data/data_2.json"
 
 output_tokenized: "data/data_2_tokenized.json"
 output_mmap: "data/data_2.mmap"
+num_workers: 8 

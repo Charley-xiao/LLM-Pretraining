@@ -30,6 +30,7 @@ output_file: "data/data_2.json" # 所有repo将生成的数据文件
 
 output_tokenized: "data/data_2_tokenized.json" # 分词后的数据文件
 output_mmap: "data/data_2.mmap" # 生成的mmap文件
+num_workers: 8 # 多进程处理数据
 ```
 
 运行 `python preprocess.py`.
