@@ -36,6 +36,41 @@ def tokenize_item(item):
     )
     return tokens
 
+def visualize_tokenization(data, tokenized_data, samples=1):
+    """Visualize tokenization results for a few samples."""
+    for _ in range(samples):
+        idx = random.randint(0, len(data) - 1)
+        item = data[idx]
+        tokens = tokenized_data[idx]
+
+        repo_name = item['repo_name']
+        file_path = item['file_path']
+        content = item['content']
+
+        if random.random() < 0.5:
+            full_context = f"<repo_name>{repo_name}<file_sep>{file_path}\n{content}<|endoftext|>"
+        else:
+            full_context = f"{content}<|endoftext|>"
+
+        with open(CONFIG_FILE, 'r') as file:
+            config = yaml.safe_load(file)
+
+        tokenizer = AutoTokenizer.from_pretrained(config['tokenizer'], use_fast=True)
+        tokenizer.pad_token = tokenizer.eos_token
+
+        decoded_tokens = tokenizer.convert_ids_to_tokens(tokens)
+        decoded_text = tokenizer.decode(tokens)
+
+        print("\nOriginal Text:")
+        print(full_context)
+        print("\nToken IDs:")
+        print(tokens)
+        print("\nDecoded Tokens:")
+        print(decoded_tokens)
+        print("\nReconstructed Text from Tokens:")
+        print(decoded_text)
+        print("=" * 80)
+
 def main():
     with open(CONFIG_FILE, 'r') as file:
         config = yaml.safe_load(file)
@@ -91,6 +126,8 @@ def main():
     del mmapped_file
 
     print(f"Data saved to {config['output_tokenized']} and {config['output_mmap']}")
+
+    visualize_tokenization(data, tokenized_data)
 
 if __name__ == '__main__':
     main()
