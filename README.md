@@ -16,7 +16,8 @@ setting: 2 # 消融实验
 data_file: "data/data_2.json" # 如果use_cache为True，将使用该文件
 
 repos_dir: "repos" # 存放repo的目录
-ignore_preset_repos: True # If True, ignore the repos in the following list, and get top_k repos from GitHub
+ignore_preset_repos: True # If True, ignore the repos in the following list, and get top_k repos
+get_repos_from: 'pypi' # 'github' or 'pypi'
 top_k: 100
 repos:
   - tornado:

@@ -101,7 +101,7 @@ def main():
             data = repos_dict
         else: 
             from utils import get_top_repos
-            raw = get_top_repos(config['top_k'], config['repos_dir'])
+            raw = get_top_repos(config['top_k'], config['repos_dir'], source=config['get_repos_from'])
             repos_dict = []
             for repo in raw:
                 repo_url = repo['url']
@@ -110,7 +110,19 @@ def main():
                 extensions = repo['extensions']
                 if not os.path.exists(os.path.join(config['repos_dir'], f"{repo_path}")):
                     print(f"Repo {repo_name} not found in {config['repos_dir']}. Downloading from {repo_url}")
-                    os.system(f"git clone {repo_url} {os.path.join(config['repos_dir'], repo_name)}")
+                    if config['get_repos_from'] == 'github':
+                        os.system(f"git clone {repo_url} {os.path.join(config['repos_dir'], repo_name)}")
+                    elif config['get_repos_from'] == 'pypi':
+                        print(f"Downloading {repo_name} from {repo_url}")
+                        os.system(f"wget {repo_url} -P {config['repos_dir']}")
+                        file_name = repo_url.split('/')[-1]
+                        downloaded_file = os.path.join(config['repos_dir'], file_name)
+                        print(f"Extracting {downloaded_file} to {os.path.join(config['repos_dir'], repo_name)}")
+                        input("Press Enter to continue...")
+                        os.system(f"cd {config['repos_dir']} && tar -xvzf {file_name} && mv {file_name.split('.tar.gz')[0]} {repo_name}")
+                        input("Press Enter to continue...")
+                        print(f"Removing {downloaded_file}")
+                        os.system(f"rm {downloaded_file}")
 
                 repos_dict.append({
                     "name": repo_name,

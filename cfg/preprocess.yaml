@@ -8,7 +8,8 @@ data_file: "data/data_2.json"
 
 repos_dir: "repos"
 ignore_preset_repos: True 
-top_k: 100
+get_repos_from: 'pypi'
+top_k: 10
 repos:
   - tornado:
       url: "https://github.com/tornadoweb/tornado"

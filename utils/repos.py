@@ -5,6 +5,7 @@ import sys
 import time 
 import random 
 import networkx as nx
+from bs4 import BeautifulSoup
 
 def invalid_description(description):
     if description is None:
@@ -20,6 +21,25 @@ def invalid_description(description):
     for word in blacklisted:
         if word in description.lower() and all(w not in description.lower() for w in whitelisted):
             return True
+        
+    return False
+
+def get_download(package_name):
+    url = f'https://pypi.org/project/{package_name}/#files'
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        father = soup.find('div', class_='card file__card')
+        if father is None:
+            print(f"Cannot find download URL for {package_name}")
+            return None
+        download_url = father.find('a')['href']
+        print(f"Download URL for {package_name}: {download_url}")
+        return download_url
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to fetch {package_name}: {e}")
+        return None
 
 def get_top_repos(top_k, repos_dir, source='github', language=None):
     """
@@ -28,7 +48,7 @@ def get_top_repos(top_k, repos_dir, source='github', language=None):
     Args:
         top_k (int): Number of top repositories to get
         repos_dir (str): Directory to save the repositories
-        source (str): Source to get the repositories from (github, gitlab)
+        source (str): Source to get the repositories from (github, pypi, etc.)
         language (str): Language of the repositories to get
 
     Returns:
@@ -76,5 +96,24 @@ def get_top_repos(top_k, repos_dir, source='github', language=None):
             page += 1
 
         return repos
+    elif source == 'pypi':
+        pypi_top_packages = 'https://hugovk.github.io/top-pypi-packages/top-pypi-packages-30-days.min.json'
+        response = requests.get(pypi_top_packages)
+        response.raise_for_status()
+        data = response.json()['rows']
+        top_packages = sorted(data, key=lambda x: x['download_count'], reverse=True)[:top_k]
+        repos = []
+        for package in top_packages:
+            package_name = package['project']
+            package_url = get_download(package_name)
+            package_path = os.path.join(repos_dir, package_name)
+            print(f"Adding {package_name} to the list")
+            repos.append({
+                "name": package_name,
+                "url": package_url,
+                "path": package_path,
+                "extensions": [language2ext[language]]
+            })
+        return repos
     else:
-        raise ValueError(f"Unsupported source: {source}")
+        raise ValueError(f"Unknown source: {source}")
