@@ -118,9 +118,7 @@ def main():
                         file_name = repo_url.split('/')[-1]
                         downloaded_file = os.path.join(config['repos_dir'], file_name)
                         print(f"Extracting {downloaded_file} to {os.path.join(config['repos_dir'], repo_name)}")
-                        input("Press Enter to continue...")
                         os.system(f"cd {config['repos_dir']} && tar -xvzf {file_name} && mv {file_name.split('.tar.gz')[0]} {repo_name}")
-                        input("Press Enter to continue...")
                         print(f"Removing {downloaded_file}")
                         os.system(f"rm {downloaded_file}")
 
