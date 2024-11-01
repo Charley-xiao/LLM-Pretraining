@@ -76,27 +76,54 @@ def main():
         config = yaml.safe_load(file)
 
     if not config['use_cache']:
-        repos_dict = []
-        for _repo in config['repos']:
-            repo = _repo[list(_repo.keys())[0]]
-            repo_url = repo['url']
-            repo_path = repo['path']
-            repo_name = repo['name']
-            extensions = repo['extensions']
-            if not os.path.exists(os.path.join(config['repos_dir'], f"{repo_path}")):
-                print(f"Repo {repo_name} not found in {config['repos_dir']}. Downloading from {repo_url}")
-                os.system(f"git clone {repo_url} {os.path.join(config['repos_dir'], repo_name)}")
+        if not config['ignore_preset_repos']:
+            repos_dict = []
+            for _repo in config['repos']:
+                repo = _repo[list(_repo.keys())[0]]
+                repo_url = repo['url']
+                repo_path = repo['path']
+                repo_name = repo['name']
+                extensions = repo['extensions']
+                if not os.path.exists(os.path.join(config['repos_dir'], f"{repo_path}")):
+                    print(f"Repo {repo_name} not found in {config['repos_dir']}. Downloading from {repo_url}")
+                    os.system(f"git clone {repo_url} {os.path.join(config['repos_dir'], repo_name)}")
 
-            repos_dict.append({
-                "name": repo_name,
-                "path": os.path.join(config['repos_dir'], repo_path),
-                "extensions": extensions
-            })
+                repos_dict.append({
+                    "name": repo_name,
+                    "path": os.path.join(config['repos_dir'], repo_path),
+                    "extensions": extensions
+                })
 
-        all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'])
+            all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'])
 
-        with open(config['output_file'], 'r') as file:
-            data = json.load(file)
+            with open(config['output_file'], 'w') as file:
+                json.dump(repos_dict, file)
+            data = repos_dict
+        else: 
+            from utils import get_top_repos
+            raw = get_top_repos(config['top_k'], config['repos_dir'])
+            repos_dict = []
+            for repo in raw:
+                repo_url = repo['url']
+                repo_path = repo['path']
+                repo_name = repo['name']
+                extensions = repo['extensions']
+                if not os.path.exists(os.path.join(config['repos_dir'], f"{repo_path}")):
+                    print(f"Repo {repo_name} not found in {config['repos_dir']}. Downloading from {repo_url}")
+                    os.system(f"git clone {repo_url} {os.path.join(config['repos_dir'], repo_name)}")
+
+                repos_dict.append({
+                    "name": repo_name,
+                    "path": os.path.join(config['repos_dir'], repo_path),
+                    "extensions": extensions
+                })
+
+            all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'])
+
+            with open(config['output_file'], 'w') as file:
+                json.dump(repos_dict, file)
+            data = repos_dict
+            
     else:
         with open(config['data_file'], 'r') as file:
             data = json.load(file)

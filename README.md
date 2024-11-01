@@ -14,7 +14,10 @@ truncation: True # 是否截断
 use_cache: False # 是否使用已有的json缓存
 setting: 2 # 消融实验
 data_file: "data/data_2.json" # 如果use_cache为True，将使用该文件
+
 repos_dir: "repos" # 存放repo的目录
+ignore_preset_repos: True # If True, ignore the repos in the following list, and get top_k repos from GitHub
+top_k: 100
 repos:
   - tornado:
       url: "https://github.com/tornadoweb/tornado" # repo的url，发现不存在则clone
