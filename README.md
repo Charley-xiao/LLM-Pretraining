@@ -2,6 +2,8 @@
 
 ## 数据预处理
 
+创建 `repos` 和 `data` 目录。
+
 修改 `cfg/preprocess.yaml`.
 
 示例：
