@@ -94,7 +94,7 @@ def main():
                     "extensions": extensions
                 })
 
-            all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'])
+            repos_dict = all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'])
 
             with open(config['output_file'], 'w') as file:
                 json.dump(repos_dict, file)
@@ -124,11 +124,11 @@ def main():
 
                 repos_dict.append({
                     "name": repo_name,
-                    "path": os.path.join(config['repos_dir'], repo_path),
+                    "path": repo_path,
                     "extensions": extensions
                 })
 
-            all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'])
+            repos_dict = all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'])
 
             with open(config['output_file'], 'w') as file:
                 json.dump(repos_dict, file)

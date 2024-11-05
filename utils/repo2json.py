@@ -51,6 +51,7 @@ def all_repos_to_json(repos, output_file, setting=2):
         repo_path = repo['path']
         repo_name = repo['name']
         extensions = repo['extensions']
+        print(f"Processing {repo_name} at {repo_path}")
         repo_data = repo_to_json(repo_path, repo_name, extensions)
         print(f"Processed {repo_name} with {len(repo_data)} files")
         if setting == 3:
