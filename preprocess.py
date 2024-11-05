@@ -71,6 +71,18 @@ def visualize_tokenization(data, tokenized_data, samples=1):
         print(decoded_text)
         print("=" * 80)
 
+    # Statistics
+    total_tokens = sum(len(tokens) for tokens in tokenized_data)
+    print(f"Total tokens: {total_tokens}")
+    print(f"Average tokens per sample: {total_tokens / len(tokenized_data)}")
+    print(f"Vocabulary size: {len(tokenizer)}")
+    print(f"Padding token ID: {tokenizer.pad_token_id}")
+    print(f"Padding token: {tokenizer.pad_token}")
+    print(f"EOS token ID: {tokenizer.eos_token_id}")
+    print(f"EOS token: {tokenizer.eos_token}")
+    print(f"Truncation: {config['truncation']}")
+    print(f"Max length: {config['max_length']}")
+
 def main():
     with open(CONFIG_FILE, 'r') as file:
         config = yaml.safe_load(file)
@@ -118,7 +130,7 @@ def main():
                         file_name = repo_url.split('/')[-1]
                         downloaded_file = os.path.join(config['repos_dir'], file_name)
                         print(f"Extracting {downloaded_file} to {os.path.join(config['repos_dir'], repo_name)}")
-                        os.system(f"cd {config['repos_dir']} && tar -xvzf {file_name} && mv {file_name.split('.tar.gz')[0]} {repo_name}")
+                        os.system(f"cd {config['repos_dir']} && tar -xzf {file_name} && mv {file_name.split('.tar.gz')[0]} {repo_name}")
                         print(f"Removing {downloaded_file}")
                         os.system(f"rm {downloaded_file}")
 
@@ -138,7 +150,12 @@ def main():
         with open(config['data_file'], 'r') as file:
             data = json.load(file)
 
+    # TODO: Remove near-duplicate files
+    # TODO: PII redaction
+    # TODO: Decontamination 
+
     num_workers = config.get('num_workers', os.cpu_count())
+    print(f"Using {num_workers} workers for tokenization")
 
     pool = multiprocessing.Pool(
         processes=num_workers,
@@ -165,6 +182,8 @@ def main():
     print(f"Data saved to {config['output_tokenized']} and {config['output_mmap']}")
 
     visualize_tokenization(data, tokenized_data)
+
+    print("Preprocessing successfully completed!")
 
 if __name__ == '__main__':
     main()
