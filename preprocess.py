@@ -32,14 +32,9 @@ def tokenize_item(item):
     repo_name = item['repo_name']
     file_path = item['file_path']
     content = item['content']
-    
-    if random.random() < 0.5:
-        full_context = f"<repo_name>{repo_name}<file_sep>{file_path}\n{content}<|endoftext|>"
-    else:
-        full_context = f"{content}<|endoftext|>"
 
     tokens = tokenizer.encode(
-        full_context,
+        content,
         add_special_tokens=True,
         truncation=config['truncation'],
         max_length=config['max_length'],

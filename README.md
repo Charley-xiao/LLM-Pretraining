@@ -46,3 +46,12 @@ num_workers: 8 # 多进程处理数据
 可选参数：
 - `--config`: 配置文件路径，默认为 `cfg/preprocess.yaml`
 - `-y`：跳过确认
+
+## 模型训练
+
+修改 `cfg/train.yaml`.
+
+运行 `torchrun --nproc_per_node=NUM_GPUS train.py`，其中 `NUM_GPUS` 为使用的GPU数量。
+
+可选参数：
+- `--config`: 配置文件路径，默认为 `cfg/train.yaml`

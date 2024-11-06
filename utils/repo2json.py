@@ -19,11 +19,15 @@ def read_file_content(filepath):
 def create_json_entry(filepath, repo_name, language):
     """ Create a JSON entry for a file """
     content = read_file_content(filepath)
+    if random.random() < 0.5:
+        full_context = f"<repo_name>{repo_name}<file_sep>{filepath}\n{content}<|endoftext|>"
+    else:
+        full_context = f"{content}<|endoftext|>"
     return {
         "repo_name": repo_name,
         "file_path": filepath,
         "language": language,
-        "content": content
+        "content": full_context
     }
 
 def save_to_json(data, output_file):
