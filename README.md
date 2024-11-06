@@ -4,6 +4,8 @@
 
 创建 `repos` 和 `data` 目录。
 
+运行 `pip install -r requirements.txt`.
+
 修改 `cfg/preprocess.yaml`.
 
 示例：
