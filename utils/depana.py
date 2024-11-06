@@ -172,3 +172,4 @@ def visualize_graph(graph, save_path=None):
         plt.savefig(save_path)
     else:
         plt.show()
+    plt.close()

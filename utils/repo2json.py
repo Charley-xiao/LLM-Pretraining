@@ -63,8 +63,12 @@ def all_repos_to_json(repos, output_file, setting=2):
             # Organize files reversely topologically
             from .depana import get_dependency_graph, visualize_graph
             import networkx as nx
-            graph_py = get_dependency_graph(repo_path, 'python')
-            graph_java = get_dependency_graph(repo_path, 'java')
+            try:
+                graph_py = get_dependency_graph(repo_path, 'python')
+                graph_java = get_dependency_graph(repo_path, 'java')
+            except SyntaxError:
+                print(f"Syntax error in {repo_name}. Skipping dependency graph")
+                continue
             graph = nx.compose(graph_py, graph_java)
             print(f"Visualizing dependency graph for {repo_name}")
             visualize_graph(graph, save_path=f"data/graph_{repo_name}.png")
