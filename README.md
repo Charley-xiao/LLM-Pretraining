@@ -55,3 +55,7 @@ num_workers: 8 # 多进程处理数据
 
 可选参数：
 - `--config`: 配置文件路径，默认为 `cfg/train.yaml`
+
+## 模型快速测试
+
+运行 `python playground.py --model_name MODEL_NAME`, 其中 `MODEL_NAME` 为模型路径，它可以是你刚刚训练的模型。
