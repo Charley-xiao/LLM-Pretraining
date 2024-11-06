@@ -36,6 +36,7 @@ class DependencyAnalyzer:
             plt.savefig(save_path)
         else:
             plt.show()
+        plt.close()
 
 
 class PythonDependencyAnalyzer(DependencyAnalyzer):
@@ -76,10 +77,10 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
             file_node = os.path.relpath(file, self.repo_path)
             self.graph.add_node(file_node)
             imports = self.parse_imports(file)
-            print(f"Found {len(imports)} imports in {file_node}")
+            # print(f"Found {len(imports)} imports in {file_node}")
 
             for imp in imports:
-                print(f"Processing import: {imp}")
+                # print(f"Processing import: {imp}")
                 if imp == '__future__' or imp is None:
                     continue
                 imported_file = self.find_file_by_module(imp)
@@ -125,10 +126,10 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
             file_node = os.path.relpath(file, self.repo_path)
             self.graph.add_node(file_node)
             imports = self.parse_imports(file)
-            print(f"Found {len(imports)} imports in {file_node}")
+            # print(f"Found {len(imports)} imports in {file_node}")
 
             for imp in imports:
-                print(f"Processing import: {imp}")
+                # print(f"Processing import: {imp}")
                 if imp is None:
                     continue
                 imported_file = self.find_file_by_module(imp)
