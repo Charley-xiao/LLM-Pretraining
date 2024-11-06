@@ -55,14 +55,30 @@ def all_repos_to_json(repos, output_file, setting=2):
         repo_data = repo_to_json(repo_path, repo_name, extensions)
         print(f"Processed {repo_name} with {len(repo_data)} files")
         if setting == 3:
+            print(f"Organizing files in {repo_name} topologically")
             # Organize files reversely topologically
-            from depana import get_dependency_graph
+            from .depana import get_dependency_graph, visualize_graph
             import networkx as nx
             graph_py = get_dependency_graph(repo_path, 'python')
             graph_java = get_dependency_graph(repo_path, 'java')
             graph = nx.compose(graph_py, graph_java)
-            # Eliminate cycles
+            print(f"Visualizing dependency graph for {repo_name}")
+            visualize_graph(graph, save_path=f"data/graph_{repo_name}.png")
+            # Eliminate self-loops
             graph.remove_edges_from(nx.selfloop_edges(graph))
+            # Eliminate cycles
+            cycles = list(nx.simple_cycles(graph))
+            for cycle in cycles:
+                if len(cycle) > 1:
+                    for i in range(len(cycle) - 1):
+                        try:
+                            graph.remove_edge(cycle[i], cycle[i + 1])
+                        except nx.NetworkXError:
+                            pass
+                    try:
+                        graph.remove_edge(cycle[-1], cycle[0])
+                    except nx.NetworkXError:
+                        pass
             sorted_files = list(nx.topological_sort(graph))
             def cmp(file):
                 try:
@@ -70,6 +86,7 @@ def all_repos_to_json(repos, output_file, setting=2):
                 except ValueError:
                     return len(sorted_files)
             repo_data = sorted(repo_data, key=cmp)
+            visualize_graph(graph, save_path=f"data/graph_{repo_name}_final.png")
         elif setting == 2:
             random.shuffle(repo_data)
         data.extend(repo_data)

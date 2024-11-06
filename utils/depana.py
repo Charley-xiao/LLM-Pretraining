@@ -27,12 +27,15 @@ class DependencyAnalyzer:
         """ Helper function to map import to a file in the repo """
         raise NotImplementedError
     
-    def visualize_dependency_graph(self):
+    def visualize_dependency_graph(self, save_path=None):
         """ Visualize the dependency graph using networkx and matplotlib """
-        plt.figure(figsize=(16, 12))
+        plt.figure(figsize=(32, 24))
         pos = nx.spring_layout(self.graph, iterations=100)
         nx.draw(self.graph, pos, with_labels=True, node_size=2000, font_size=10, node_color='skyblue', edge_color='black', alpha=0.7)
-        plt.show()
+        if save_path:
+            plt.savefig(save_path)
+        else:
+            plt.show()
 
 
 class PythonDependencyAnalyzer(DependencyAnalyzer):
@@ -67,13 +70,18 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
     def build_dependency_graph(self):
         """ Build a dependency graph for the Python files in the repository """
         python_files = self.get_files()
+        print(f"Found {len(python_files)} Python files in the repository")
         
         for file in python_files:
             file_node = os.path.relpath(file, self.repo_path)
             self.graph.add_node(file_node)
             imports = self.parse_imports(file)
+            print(f"Found {len(imports)} imports in {file_node}")
 
             for imp in imports:
+                print(f"Processing import: {imp}")
+                if imp == '__future__' or imp is None:
+                    continue
                 imported_file = self.find_file_by_module(imp)
                 if imported_file:
                     self.graph.add_edge(file_node, imported_file)
@@ -111,13 +119,18 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
     def build_dependency_graph(self):
         """ Build a dependency graph for the Java files in the repository """
         java_files = self.get_files()
+        print(f"Found {len(java_files)} Java files in the repository")
         
         for file in java_files:
             file_node = os.path.relpath(file, self.repo_path)
             self.graph.add_node(file_node)
             imports = self.parse_imports(file)
+            print(f"Found {len(imports)} imports in {file_node}")
 
             for imp in imports:
+                print(f"Processing import: {imp}")
+                if imp is None:
+                    continue
                 imported_file = self.find_file_by_module(imp)
                 if imported_file:
                     self.graph.add_edge(file_node, imported_file)
@@ -147,3 +160,14 @@ def get_dependency_graph(repo_path, language) -> nx.DiGraph:
 def save_dependency_graph(graph, output_file):
     with open(output_file, 'wb') as f:
         pickle.dump(graph, f)
+
+
+def visualize_graph(graph, save_path=None):
+    """ Visualize a given graph using networkx and matplotlib """
+    plt.figure(figsize=(32, 24))
+    pos = nx.spring_layout(graph, iterations=100)
+    nx.draw(graph, pos, with_labels=True, node_size=2000, font_size=10, node_color='skyblue', edge_color='black', alpha=0.7)
+    if save_path:
+        plt.savefig(save_path)
+    else:
+        plt.show()

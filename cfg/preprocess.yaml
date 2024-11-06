@@ -3,8 +3,8 @@ max_length: 100000
 truncation: True
 
 use_cache: False
-setting: 2
-data_file: "data/data_2.json"
+setting: 3
+data_file: "data/data_3.json"
 
 repos_dir: "repos"
 ignore_preset_repos: True 
@@ -21,8 +21,8 @@ repos:
       name: "flask"
       path: "flask/src/flask"
       extensions: [".py"]
-output_file: "data/data_2.json"
+output_file: "data/data_3.json"
 
-output_tokenized: "data/data_2_tokenized.json"
-output_mmap: "data/data_2.mmap"
+output_tokenized: "data/data_3_tokenized.json"
+output_mmap: "data/data_3.mmap"
 num_workers: 8 
