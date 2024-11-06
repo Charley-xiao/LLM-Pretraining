@@ -40,3 +40,7 @@ num_workers: 8 # 多进程处理数据
 ```
 
 运行 `python preprocess.py`.
+
+可选参数：
+- `--config`: 配置文件路径，默认为 `cfg/preprocess.yaml`
+- `-y`：跳过确认

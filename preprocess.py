@@ -7,8 +7,19 @@ import yaml
 import sys
 from utils import all_repos_to_json
 import multiprocessing
+import urllib.request
+import tarfile
+import argparse
 
-CONFIG_FILE = "cfg/preprocess.yaml"
+argparser = argparse.ArgumentParser()
+argparser.add_argument("--config", type=str, default="cfg/preprocess.yaml", help="Path to the configuration file")
+argparser.add_argument("-y", action='store_true', help="Skip confirmation")
+args = argparser.parse_args()
+
+CONFIG_FILE = args.config
+
+if args.y:
+    print("WARNING: By skipping confirmation, you agree to overwrite existing files.")
 
 def init_worker(_config):
     global tokenizer
@@ -112,6 +123,23 @@ def main():
                 json.dump(repos_dict, file)
             data = repos_dict
         else: 
+            if not os.path.exists(config['repos_dir']):
+                os.makedirs(config['repos_dir'])
+            else:
+                print(f"WARNING: {config['repos_dir']} already exists.")
+                if not args.y:
+                    response = input("Do you want to overwrite it? (y/n): ")
+                    if response.lower() != 'y':
+                        print("ABORTED!")
+                        sys.exit(1)
+                else:
+                    print("Overwriting existing files and directories.")
+                for file in os.listdir(config['repos_dir']):
+                    file_path = os.path.join(config['repos_dir'], file)
+                    if os.path.isfile(file_path):
+                        os.remove(file_path)
+                    elif os.path.isdir(file_path):
+                        os.system(f"rm -rf {file_path}")
             from utils import get_top_repos
             raw = get_top_repos(config['top_k'], config['repos_dir'], source=config['get_repos_from'])
             repos_dict = []
@@ -126,13 +154,16 @@ def main():
                         os.system(f"git clone {repo_url} {os.path.join(config['repos_dir'], repo_name)}")
                     elif config['get_repos_from'] == 'pypi':
                         print(f"Downloading {repo_name} from {repo_url}")
-                        os.system(f"wget {repo_url} -P {config['repos_dir']}")
                         file_name = repo_url.split('/')[-1]
                         downloaded_file = os.path.join(config['repos_dir'], file_name)
+                        urllib.request.urlretrieve(repo_url, downloaded_file)
                         print(f"Extracting {downloaded_file} to {os.path.join(config['repos_dir'], repo_name)}")
-                        os.system(f"cd {config['repos_dir']} && tar -xzf {file_name} && mv {file_name.split('.tar.gz')[0]} {repo_name}")
+                        with tarfile.open(downloaded_file, 'r:gz') as tar:
+                            tar.extractall(path=config['repos_dir'])
+                            os.rename(os.path.join(config['repos_dir'], file_name.split('.tar.gz')[0]), 
+                                    os.path.join(config['repos_dir'], repo_name))
                         print(f"Removing {downloaded_file}")
-                        os.system(f"rm {downloaded_file}")
+                        os.remove(downloaded_file)
 
                 repos_dict.append({
                     "name": repo_name,
