@@ -29,10 +29,7 @@ def create_json_entry(filepath, repo_name, language):
         "repo_name": repo_name,
         "file_path": filepath,
         "language": language,
-        # "content": full_context
-        "output": full_context,
-        "input": "",
-        "instruction": ""
+        "content": full_context
     }
 
 def save_to_json(data, output_file):
