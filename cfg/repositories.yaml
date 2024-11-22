@@ -1,15 +1,3 @@
-tokenizer: "gpt2"
-max_length: 100000
-truncation: True
-
-use_cache: False
-setting: 3
-data_file: "data/data_3.json"
-
-repos_dir: "repos"
-ignore_preset_repos: True 
-get_repos_from: 'pypi'
-top_k: 10
 repos:
     - numpy:
         name: "numpy"
@@ -491,9 +479,3 @@ repos:
         url: "https://github.com/toml-lang/toml"
         path: "toml-lang/toml/toml"
         extensions: [".py"]
-
-output_file: "data/data_3.json"
-
-output_tokenized: "data/data_3_tokenized.json"
-output_mmap: "data/data_3.mmap"
-num_workers: 8 
