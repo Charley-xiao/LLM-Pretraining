@@ -7,9 +7,9 @@ setting: 3
 data_file: "data/data_3.json"
 
 repos_dir: "repos"
-ignore_preset_repos: True 
+ignore_preset_repos: False
 get_repos_from: 'pypi'
-top_k: 10
+top_k: 100
 repos:
     - numpy:
         name: "numpy"
@@ -496,4 +496,4 @@ output_file: "data/data_3.json"
 
 output_tokenized: "data/data_3_tokenized.json"
 output_mmap: "data/data_3.mmap"
-num_workers: 8 
+num_workers: 30

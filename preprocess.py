@@ -116,6 +116,7 @@ def main():
 
             with open(config['output_file'], 'w') as file:
                 json.dump(repos_dict, file)
+                print('='* 50)
             data = repos_dict
         else: 
             if not os.path.exists(config['repos_dir']):
