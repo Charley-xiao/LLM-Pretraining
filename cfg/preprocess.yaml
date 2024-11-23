@@ -136,11 +136,6 @@ repos:
           name: "click"
           path: "click"
           extensions: [ ".py" ]
-    - lxml:
-          url: "https://github.com/lxml/lxml"
-          name: "lxml"
-          path: "lxml"
-          extensions: [ ".py" ]
     - jinja2:
           url: "https://github.com/mattrobenolt/jinja2-cli"
           name: "jinja2"
@@ -390,11 +385,6 @@ repos:
           url: "https://github.com/nltk/nltk"
           name: "nltk"
           path: "nltk"
-          extensions: [ ".py" ]
-    - langchain:
-          url: "https://github.com/langchain-ai/langchain"
-          name: "langchain"
-          path: "langchain"
           extensions: [ ".py" ]
     - h11:
           url: "https://github.com/python-hyper/h11"

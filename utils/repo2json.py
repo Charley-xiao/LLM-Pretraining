@@ -13,8 +13,13 @@ def collect_files(repo_path, extensions):
 
 def read_file_content(filepath):
     """ Read the content of a file """
-    with open(filepath, 'r', encoding='utf-8') as file:
-        return file.read()
+    try:
+        with open(filepath, 'r', encoding='utf-8') as file:
+            return file.read()
+    except UnicodeDecodeError as e:
+        print('!' * 80)
+        print(f"UnicodeDecodeError in file {filepath}: {e}")
+        return ""  # Return empty string or handle the error as needed
 
 def create_json_entry(filepath, repo_name, language):
     """ Create a JSON entry for a file """
