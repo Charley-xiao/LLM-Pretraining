@@ -12,486 +12,485 @@ get_repos_from: 'pypi'
 top_k: 100
 repos:
     - numpy:
-        name: "numpy"
-        url: "https://github.com/numpy/numpy"
-        path: "numpy/numpy/numpy"
-        extensions: [".py"]
+          url: "https://github.com/numpy/numpy"
+          name: "numpy"
+          path: "numpy"
+          extensions: [ ".py" ]
     - requests:
-        name: "requests"
-        url: "https://github.com/psf/requests"
-        path: "psf/requests/requests"
-        extensions: [".py"]
+          url: "https://github.com/psf/requests"
+          name: "requests"
+          path: "requests"
+          extensions: [ ".py" ]
     - tqdm:
-        name: "tqdm"
-        url: "https://github.com/tqdm/tqdm"
-        path: "tqdm/tqdm/tqdm"
-        extensions: [".py"]
+          url: "https://github.com/tqdm/tqdm"
+          name: "tqdm"
+          path: "tqdm"
+          extensions: [ ".py" ]
     - scipy:
-        name: "scipy"
-        url: "https://github.com/scipy/scipy"
-        path: "scipy/scipy/scipy"
-        extensions: [".py"]
+          url: "https://github.com/scipy/scipy"
+          name: "scipy"
+          path: "scipy"
+          extensions: [ ".py" ]
     - Pillow:
-        name: "Pillow"
-        url: "https://github.com/python-pillow/Pillow"
-        path: "python-pillow/Pillow/Pillow"
-        extensions: [".py"]
+          url: "https://github.com/python-pillow/Pillow"
+          name: "Pillow"
+          path: "Pillow"
+          extensions: [ ".py" ]
     - pyyaml:
-        name: "pyyaml"
-        url: "https://github.com/yaml/pyyaml"
-        path: "yaml/pyyaml/pyyaml"
-        extensions: [".py"]
+          url: "https://github.com/yaml/pyyaml"
+          name: "pyyaml"
+          path: "pyyaml"
+          extensions: [ ".py" ]
     - torch:
-        name: "torch"
-        url: "https://github.com/mattstauffer/Torch"
-        path: "mattstauffer/Torch/torch"
-        extensions: [".py"]
+          url: "https://github.com/mattstauffer/Torch"
+          name: "torch"
+          path: "torch"
+          extensions: [ ".py" ]
     - urllib3:
-        name: "urllib3"
-        url: "https://github.com/urllib3/urllib3"
-        path: "urllib3/urllib3/urllib3"
-        extensions: [".py"]
+          url: "https://github.com/urllib3/urllib3"
+          name: "urllib3"
+          path: "urllib3"
+          extensions: [ ".py" ]
     - opencv-python:
-        name: "opencv-python"
-        url: "https://github.com/opencv/opencv-python"
-        path: "opencv/opencv-python/opencv-python"
-        extensions: [".py"]
+          url: "https://github.com/opencv/opencv-python"
+          name: "opencv-python"
+          path: "opencv-python"
+          extensions: [ ".py" ]
     - psutil:
-        name: "psutil"
-        url: "https://github.com/giampaolo/psutil"
-        path: "giampaolo/psutil/psutil"
-        extensions: [".py"]
+          url: "https://github.com/giampaolo/psutil"
+          name: "psutil"
+          path: "psutil"
+          extensions: [ ".py" ]
     - transformers:
-        name: "transformers"
-        url: "https://github.com/huggingface/transformers"
-        path: "huggingface/transformers/transformers"
-        extensions: [".py"]
+          url: "https://github.com/huggingface/transformers"
+          name: "transformers"
+          path: "transformers"
+          extensions: [ ".py" ]
     - matplotlib:
-        name: "matplotlib"
-        url: "https://github.com/matplotlib/matplotlib"
-        path: "matplotlib/matplotlib/matplotlib"
-        extensions: [".py"]
+          url: "https://github.com/matplotlib/matplotlib"
+          name: "matplotlib"
+          path: "matplotlib"
+          extensions: [ ".py" ]
     - protobuf:
-        name: "protobuf"
-        url: "https://github.com/protocolbuffers/protobuf"
-        path: "protocolbuffers/protobuf/protobuf"
-        extensions: [".py"]
+          url: "https://github.com/protocolbuffers/protobuf"
+          name: "protobuf"
+          path: "protobuf"
+          extensions: [ ".py" ]
     - packaging:
-        name: "packaging"
-        url: "https://github.com/pypa/packaging"
-        path: "pypa/packaging/packaging"
-        extensions: [".py"]
+          url: "https://github.com/pypa/packaging"
+          name: "packaging"
+          path: "packaging"
+          extensions: [ ".py" ]
     - gradio:
-        name: "gradio"
-        url: "https://github.com/gradio-app/gradio"
-        path: "gradio-app/gradio/gradio"
-        extensions: [".py"]
+          url: "https://github.com/gradio-app/gradio"
+          name: "gradio"
+          path: "gradio"
+          extensions: [ ".py" ]
     - openai:
-        name: "openai"
-        url: "https://github.com/betalgo/openai"
-        path: "betalgo/openai/openai"
-        extensions: [".py"]
+          url: "https://github.com/betalgo/openai"
+          name: "openai"
+          path: "openai"
+          extensions: [ ".py" ]
     - certifi:
-        name: "certifi"
-        url: "https://github.com/certifi/python-certifi"
-        path: "certifi/python-certifi/certifi"
-        extensions: [".py"]
+          url: "https://github.com/certifi/python-certifi"
+          name: "certifi"
+          path: "certifi"
+          extensions: [ ".py" ]
     - beautifulsoup4:
-        name: "beautifulsoup4"
-        url: "https://github.com/wention/BeautifulSoup4"
-        path: "wention/BeautifulSoup4/beautifulsoup4"
-        extensions: [".py"]
+          url: "https://github.com/wention/BeautifulSoup4"
+          name: "beautifulsoup4"
+          path: "beautifulsoup4"
+          extensions: [ ".py" ]
     - tiktoken:
-        name: "tiktoken"
-        url: "https://github.com/openai/tiktoken"
-        path: "openai/tiktoken/tiktoken"
-        extensions: [".py"]
+          url: "https://github.com/openai/tiktoken"
+          name: "tiktoken"
+          path: "tiktoken"
+          extensions: [ ".py" ]
     - pydantic:
-        name: "pydantic"
-        url: "https://github.com/pydantic/pydantic"
-        path: "pydantic/pydantic/pydantic"
-        extensions: [".py"]
+          url: "https://github.com/pydantic/pydantic"
+          name: "pydantic"
+          path: "pydantic"
+          extensions: [ ".py" ]
     - pandas:
-        name: "pandas"
-        url: "https://github.com/pandas-dev/pandas"
-        path: "pandas-dev/pandas/pandas"
-        extensions: [".py"]
+          url: "https://github.com/pandas-dev/pandas"
+          name: "pandas"
+          path: "pandas"
+          extensions: [ ".py" ]
     - rich:
-        name: "rich"
-        url: "https://github.com/Textualize/rich"
-        path: "Textualize/rich/rich"
-        extensions: [".py"]
+          url: "https://github.com/Textualize/rich"
+          name: "rich"
+          path: "rich"
+          extensions: [ ".py" ]
     - sentencepiece:
-        name: "sentencepiece"
-        url: "https://github.com/google/sentencepiece"
-        path: "google/sentencepiece/sentencepiece"
-        extensions: [".py"]
+          url: "https://github.com/google/sentencepiece"
+          name: "sentencepiece"
+          path: "sentencepiece"
+          extensions: [ ".py" ]
     - cryptography:
-        name: "cryptography"
-        url: "https://github.com/pyca/cryptography"
-        path: "pyca/cryptography/cryptography"
-        extensions: [".py"]
+          url: "https://github.com/pyca/cryptography"
+          name: "cryptography"
+          path: "cryptography"
+          extensions: [ ".py" ]
     - click:
-        name: "click"
-        url: "https://github.com/pallets/click"
-        path: "pallets/click/click"
-        extensions: [".py"]
+          url: "https://github.com/pallets/click"
+          name: "click"
+          path: "click"
+          extensions: [ ".py" ]
     - lxml:
-        name: "lxml"
-        url: "https://github.com/lxml/lxml"
-        path: "lxml/lxml/lxml"
-        extensions: [".py"]
+          url: "https://github.com/lxml/lxml"
+          name: "lxml"
+          path: "lxml"
+          extensions: [ ".py" ]
     - jinja2:
-        name: "jinja2"
-        url: "https://github.com/mattrobenolt/jinja2-cli"
-        path: "mattrobenolt/jinja2-cli/jinja2"
-        extensions: [".py"]
+          url: "https://github.com/mattrobenolt/jinja2-cli"
+          name: "jinja2"
+          path: "jinja2"
+          extensions: [ ".py" ]
     - fastapi:
-        name: "fastapi"
-        url: "https://github.com/fastapi/fastapi"
-        path: "fastapi/fastapi/fastapi"
-        extensions: [".py"]
+          url: "https://github.com/fastapi/fastapi"
+          name: "fastapi"
+          path: "fastapi"
+          extensions: [ ".py" ]
     - colorama:
-        name: "colorama"
-        url: "https://github.com/tartley/colorama"
-        path: "tartley/colorama/colorama"
-        extensions: [".py"]
+          url: "https://github.com/tartley/colorama"
+          name: "colorama"
+          path: "colorama"
+          extensions: [ ".py" ]
     - torchvision:
-        name: "torchvision"
-        url: "https://github.com/mlverse/torchvision"
-        path: "mlverse/torchvision/torchvision"
-        extensions: [".py"]
+          url: "https://github.com/mlverse/torchvision"
+          name: "torchvision"
+          path: "torchvision"
+          extensions: [ ".py" ]
     - idna:
-        name: "idna"
-        url: "https://github.com/kjd/idna"
-        path: "kjd/idna/idna"
-        extensions: [".py"]
+          url: "https://github.com/kjd/idna"
+          name: "idna"
+          path: "idna"
+          extensions: [ ".py" ]
     - python-dateutil:
-        name: "python-dateutil"
-        url: "https://github.com/paxan/python-dateutil"
-        path: "paxan/python-dateutil/python-dateutil"
-        extensions: [".py"]
+          url: "https://github.com/paxan/python-dateutil"
+          name: "python-dateutil"
+          path: "python-dateutil"
+          extensions: [ ".py" ]
     - six:
-        name: "six"
-        url: "https://github.com/benjaminp/six"
-        path: "benjaminp/six/six"
-        extensions: [".py"]
+          url: "https://github.com/benjaminp/six"
+          name: "six"
+          path: "six"
+          extensions: [ ".py" ]
     - pillow:
-        name: "pillow"
-        url: "https://github.com/python-pillow/Pillow"
-        path: "python-pillow/Pillow/pillow"
-        extensions: [".py"]
+          url: "https://github.com/python-pillow/Pillow"
+          name: "pillow"
+          path: "pillow"
+          extensions: [ ".py" ]
     - accelerate:
-        name: "accelerate"
-        url: "https://github.com/huggingface/accelerate"
-        path: "huggingface/accelerate/accelerate"
-        extensions: [".py"]
+          url: "https://github.com/huggingface/accelerate"
+          name: "accelerate"
+          path: "accelerate"
+          extensions: [ ".py" ]
     - einops:
-        name: "einops"
-        url: "https://github.com/arogozhnikov/einops"
-        path: "arogozhnikov/einops/einops"
-        extensions: [".py"]
+          url: "https://github.com/arogozhnikov/einops"
+          name: "einops"
+          path: "einops"
+          extensions: [ ".py" ]
     - pytest:
-        name: "pytest"
-        url: "https://github.com/pytest-dev/pytest"
-        path: "pytest-dev/pytest/pytest"
-        extensions: [".py"]
+          url: "https://github.com/pytest-dev/pytest"
+          name: "pytest"
+          path: "pytest"
+          extensions: [ ".py" ]
     - PyYAML:
-        name: "PyYAML"
-        url: "https://github.com/yaml/pyyaml"
-        path: "yaml/pyyaml/PyYAML"
-        extensions: [".py"]
+          url: "https://github.com/yaml/pyyaml"
+          name: "PyYAML"
+          path: "PyYAML"
+          extensions: [ ".py" ]
     - flask:
-        name: "flask"
-        url: "https://github.com/pallets/flask"
-        path: "pallets/flask/flask"
-        extensions: [".py"]
+          url: "https://github.com/pallets/flask"
+          name: "flask"
+          path: "flask"
+          extensions: [ ".py" ]
     - regex:
-        name: "regex"
-        url: "https://github.com/rust-lang/regex"
-        path: "rust-lang/regex/regex"
-        extensions: [".py"]
+          url: "https://github.com/rust-lang/regex"
+          name: "regex"
+          path: "regex"
+          extensions: [ ".py" ]
     - scikit-learn:
-        name: "scikit-learn"
-        url: "https://github.com/scikit-learn/scikit-learn"
-        path: "scikit-learn/scikit-learn/scikit-learn"
-        extensions: [".py"]
+          url: "https://github.com/scikit-learn/scikit-learn"
+          name: "scikit-learn"
+          path: "scikit-learn"
+          extensions: [ ".py" ]
     - aiohttp:
-        name: "aiohttp"
-        url: "https://github.com/aio-libs/aiohttp"
-        path: "aio-libs/aiohttp/aiohttp"
-        extensions: [".py"]
+          url: "https://github.com/aio-libs/aiohttp"
+          name: "aiohttp"
+          path: "aiohttp"
+          extensions: [ ".py" ]
     - httpx:
-        name: "httpx"
-        url: "https://github.com/encode/httpx"
-        path: "encode/httpx/httpx"
-        extensions: [".py"]
+          url: "https://github.com/encode/httpx"
+          name: "httpx"
+          path: "httpx"
+          extensions: [ ".py" ]
     - Jinja2:
-        name: "Jinja2"
-        url: "https://github.com/mattrobenolt/jinja2-cli"
-        path: "mattrobenolt/jinja2-cli/Jinja2"
-        extensions: [".py"]
+          url: "https://github.com/mattrobenolt/jinja2-cli"
+          name: "Jinja2"
+          path: "Jinja2"
+          extensions: [ ".py" ]
     - uvicorn:
-        name: "uvicorn"
-        url: "https://github.com/encode/uvicorn"
-        path: "encode/uvicorn/uvicorn"
-        extensions: [".py"]
+          url: "https://github.com/encode/uvicorn"
+          name: "uvicorn"
+          path: "uvicorn"
+          extensions: [ ".py" ]
     - typing-extensions:
-        name: "typing-extensions"
-        url: "https://github.com/python/typing_extensions"
-        path: "python/typing_extensions/typing-extensions"
-        extensions: [".py"]
+          url: "https://github.com/python/typing_extensions"
+          name: "typing-extensions"
+          path: "typing-extensions"
+          extensions: [ ".py" ]
     - openpyxl:
-        name: "openpyxl"
-        url: "https://github.com/ericgazoni/openpyxl"
-        path: "ericgazoni/openpyxl/openpyxl"
-        extensions: [".py"]
+          url: "https://github.com/ericgazoni/openpyxl"
+          name: "openpyxl"
+          path: "openpyxl"
+          extensions: [ ".py" ]
     - python-dotenv:
-        name: "python-dotenv"
-        url: "https://github.com/theskumar/python-dotenv"
-        path: "theskumar/python-dotenv/python-dotenv"
-        extensions: [".py"]
+          url: "https://github.com/theskumar/python-dotenv"
+          name: "python-dotenv"
+          path: "python-dotenv"
+          extensions: [ ".py" ]
     - pygments:
-        name: "pygments"
-        url: "https://github.com/pygments/pygments"
-        path: "pygments/pygments/pygments"
-        extensions: [".py"]
+          url: "https://github.com/pygments/pygments"
+          name: "pygments"
+          path: "pygments"
+          extensions: [ ".py" ]
     - loguru:
-        name: "loguru"
-        url: "https://github.com/Delgan/loguru"
-        path: "Delgan/loguru/loguru"
-        extensions: [".py"]
+          url: "https://github.com/Delgan/loguru"
+          name: "loguru"
+          path: "loguru"
+          extensions: [ ".py" ]
     - chardet:
-        name: "chardet"
-        url: "https://github.com/chardet/chardet"
-        path: "chardet/chardet/chardet"
-        extensions: [".py"]
+          url: "https://github.com/chardet/chardet"
+          name: "chardet"
+          path: "chardet"
+          extensions: [ ".py" ]
     - redis:
-        name: "redis"
-        url: "https://github.com/redis/redis"
-        path: "redis/redis/redis"
-        extensions: [".py"]
+          url: "https://github.com/redis/redis"
+          name: "redis"
+          path: "redis"
+          extensions: [ ".py" ]
     - safetensors:
-        name: "safetensors"
-        url: "https://github.com/huggingface/safetensors"
-        path: "huggingface/safetensors/safetensors"
-        extensions: [".py"]
+          url: "https://github.com/huggingface/safetensors"
+          name: "safetensors"
+          path: "safetensors"
+          extensions: [ ".py" ]
     - numba:
-        name: "numba"
-        url: "https://github.com/numba/numba"
-        path: "numba/numba/numba"
-        extensions: [".py"]
+          url: "https://github.com/numba/numba"
+          name: "numba"
+          path: "numba"
+          extensions: [ ".py" ]
     - librosa:
-        name: "librosa"
-        url: "https://github.com/librosa/librosa"
-        path: "librosa/librosa/librosa"
-        extensions: [".py"]
+          url: "https://github.com/librosa/librosa"
+          name: "librosa"
+          path: "librosa"
+          extensions: [ ".py" ]
     - setuptools:
-        name: "setuptools"
-        url: "https://github.com/pypa/setuptools"
-        path: "pypa/setuptools/setuptools"
-        extensions: [".py"]
+          url: "https://github.com/pypa/setuptools"
+          name: "setuptools"
+          path: "setuptools"
+          extensions: [ ".py" ]
     - tenacity:
-        name: "tenacity"
-        url: "https://github.com/jd/tenacity"
-        path: "jd/tenacity/tenacity"
-        extensions: [".py"]
+          url: "https://github.com/jd/tenacity"
+          name: "tenacity"
+          path: "tenacity"
+          extensions: [ ".py" ]
     - anyio:
-        name: "anyio"
-        url: "https://github.com/agronholm/anyio"
-        path: "agronholm/anyio/anyio"
-        extensions: [".py"]
+          url: "https://github.com/agronholm/anyio"
+          name: "anyio"
+          path: "anyio"
+          extensions: [ ".py" ]
     - charset-normalizer:
-        name: "charset-normalizer"
-        url: "https://github.com/jawah/charset_normalizer"
-        path: "jawah/charset_normalizer/charset-normalizer"
-        extensions: [".py"]
+          url: "https://github.com/jawah/charset_normalizer"
+          name: "charset-normalizer"
+          path: "charset-normalizer"
+          extensions: [ ".py" ]
     - pytz:
-        name: "pytz"
-        url: "https://github.com/stub42/pytz"
-        path: "stub42/pytz/pytz"
-        extensions: [".py"]
+          url: "https://github.com/stub42/pytz"
+          name: "pytz"
+          path: "pytz"
+          extensions: [ ".py" ]
     - filelock:
-        name: "filelock"
-        url: "https://github.com/tox-dev/filelock"
-        path: "tox-dev/filelock/filelock"
-        extensions: [".py"]
+          url: "https://github.com/tox-dev/filelock"
+          name: "filelock"
+          path: "filelock"
+          extensions: [ ".py" ]
     - jieba:
-        name: "jieba"
-        url: "https://github.com/fxsjy/jieba"
-        path: "fxsjy/jieba/jieba"
-        extensions: [".py"]
+          url: "https://github.com/fxsjy/jieba"
+          name: "jieba"
+          path: "jieba"
+          extensions: [ ".py" ]
     - MarkupSafe:
-        name: "MarkupSafe"
-        url: "https://github.com/pallets/markupsafe"
-        path: "pallets/markupsafe/MarkupSafe"
-        extensions: [".py"]
+          url: "https://github.com/pallets/markupsafe"
+          name: "MarkupSafe"
+          path: "MarkupSafe"
+          extensions: [ ".py" ]
     - fire:
-        name: "fire"
-        url: "https://github.com/ZTO-Express/fire"
-        path: "ZTO-Express/fire/fire"
-        extensions: [".py"]
+          url: "https://github.com/ZTO-Express/fire"
+          name: "fire"
+          path: "fire"
+          extensions: [ ".py" ]
     - attrs:
-        name: "attrs"
-        url: "https://github.com/python-attrs/attrs"
-        path: "python-attrs/attrs/attrs"
-        extensions: [".py"]
+          url: "https://github.com/python-attrs/attrs"
+          name: "attrs"
+          path: "attrs"
+          extensions: [ ".py" ]
     - orjson:
-        name: "orjson"
-        url: "https://github.com/ijl/orjson"
-        path: "ijl/orjson/orjson"
-        extensions: [".py"]
+          url: "https://github.com/ijl/orjson"
+          name: "orjson"
+          path: "orjson"
+          extensions: [ ".py" ]
     - pydub:
-        name: "pydub"
-        url: "https://github.com/jiaaro/pydub"
-        path: "jiaaro/pydub/pydub"
-        extensions: [".py"]
+          url: "https://github.com/jiaaro/pydub"
+          name: "pydub"
+          path: "pydub"
+          extensions: [ ".py" ]
     - torchaudio:
-        name: "torchaudio"
-        url: "https://github.com/mlverse/torchaudio"
-        path: "mlverse/torchaudio/torchaudio"
-        extensions: [".py"]
+          url: "https://github.com/mlverse/torchaudio"
+          name: "torchaudio"
+          path: "torchaudio"
+          extensions: [ ".py" ]
     - scikit-image:
-        name: "scikit-image"
-        url: "https://github.com/scikit-image/scikit-image"
-        path: "scikit-image/scikit-image/scikit-image"
-        extensions: [".py"]
+          url: "https://github.com/scikit-image/scikit-image"
+          name: "scikit-image"
+          path: "scikit-image"
+          extensions: [ ".py" ]
     - tensorflow:
-        name: "tensorflow"
-        url: "https://github.com/tensorflow/tensorflow"
-        path: "tensorflow/tensorflow/tensorflow"
-        extensions: [".py"]
+          url: "https://github.com/tensorflow/tensorflow"
+          name: "tensorflow"
+          path: "tensorflow"
+          extensions: [ ".py" ]
     - datasets:
-        name: "datasets"
-        url: "https://github.com/huggingface/datasets"
-        path: "huggingface/datasets/datasets"
-        extensions: [".py"]
+          url: "https://github.com/huggingface/datasets"
+          name: "datasets"
+          path: "datasets"
+          extensions: [ ".py" ]
     - tensorboard:
-        name: "tensorboard"
-        url: "https://github.com/tensorflow/tensorboard"
-        path: "tensorflow/tensorboard/tensorboard"
-        extensions: [".py"]
+          url: "https://github.com/tensorflow/tensorboard"
+          name: "tensorboard"
+          path: "tensorboard"
+          extensions: [ ".py" ]
     - gevent:
-        name: "gevent"
-        url: "https://github.com/gevent/gevent"
-        path: "gevent/gevent/gevent"
-        extensions: [".py"]
+          url: "https://github.com/gevent/gevent"
+          name: "gevent"
+          path: "gevent"
+          extensions: [ ".py" ]
     - cffi:
-        name: "cffi"
-        url: "https://github.com/cffi/cffi"
-        path: "cffi/cffi/cffi"
-        extensions: [".py"]
+          url: "https://github.com/cffi/cffi"
+          name: "cffi"
+          path: "cffi"
+          extensions: [ ".py" ]
     - huggingface_hub:
-        name: "huggingface_hub"
-        url: "https://github.com/huggingface/huggingface_hub"
-        path: "huggingface/huggingface_hub/huggingface_hub"
-        extensions: [".py"]
+          url: "https://github.com/huggingface/huggingface_hub"
+          name: "huggingface_hub"
+          path: "huggingface_hub"
+          extensions: [ ".py" ]
     - nltk:
-        name: "nltk"
-        url: "https://github.com/nltk/nltk"
-        path: "nltk/nltk/nltk"
-        extensions: [".py"]
+          url: "https://github.com/nltk/nltk"
+          name: "nltk"
+          path: "nltk"
+          extensions: [ ".py" ]
     - langchain:
-        name: "langchain"
-        url: "https://github.com/langchain-ai/langchain"
-        path: "langchain-ai/langchain/langchain"
-        extensions: [".py"]
+          url: "https://github.com/langchain-ai/langchain"
+          name: "langchain"
+          path: "langchain"
+          extensions: [ ".py" ]
     - h11:
-        name: "h11"
-        url: "https://github.com/python-hyper/h11"
-        path: "python-hyper/h11/h11"
-        extensions: [".py"]
+          url: "https://github.com/python-hyper/h11"
+          name: "h11"
+          path: "h11"
+          extensions: [ ".py" ]
     - httpcore:
-        name: "httpcore"
-        url: "https://github.com/encode/httpcore"
-        path: "encode/httpcore/httpcore"
-        extensions: [".py"]
+          url: "https://github.com/encode/httpcore"
+          name: "httpcore"
+          path: "httpcore"
+          extensions: [ ".py" ]
     - prompt-toolkit:
-        name: "prompt-toolkit"
-        url: "https://github.com/prompt-toolkit/python-prompt-toolkit"
-        path: "prompt-toolkit/python-prompt-toolkit/prompt-toolkit"
-        extensions: [".py"]
+          url: "https://github.com/prompt-toolkit/python-prompt-toolkit"
+          name: "prompt-toolkit"
+          path: "prompt-toolkit"
+          extensions: [ ".py" ]
     - sniffio:
-        name: "sniffio"
-        url: "https://github.com/python-trio/sniffio"
-        path: "python-trio/sniffio/sniffio"
-        extensions: [".py"]
+          url: "https://github.com/python-trio/sniffio"
+          name: "sniffio"
+          path: "sniffio"
+          extensions: [ ".py" ]
     - Flask:
-        name: "Flask"
-        url: "https://github.com/pallets/flask"
-        path: "pallets/flask/Flask"
-        extensions: [".py"]
+          url: "https://github.com/pallets/flask"
+          name: "Flask"
+          path: "Flask"
+          extensions: [ ".py" ]
     - future:
-        name: "future"
-        url: "https://github.com/futureverse/future"
-        path: "futureverse/future/future"
-        extensions: [".py"]
+          url: "https://github.com/futureverse/future"
+          name: "future"
+          path: "future"
+          extensions: [ ".py" ]
     - mkdocs-material:
-        name: "mkdocs-material"
-        url: "https://github.com/squidfunk/mkdocs-material"
-        path: "squidfunk/mkdocs-material/mkdocs-material"
-        extensions: [".py"]
+          url: "https://github.com/squidfunk/mkdocs-material"
+          name: "mkdocs-material"
+          path: "mkdocs-material"
+          extensions: [ ".py" ]
     - requests:
-        name: "requests"
-        url: "https://github.com/psf/requests"
-        path: "psf/requests/requests"
-        extensions: [".py"]
+          url: "https://github.com/psf/requests"
+          name: "requests"
+          path: "requests"
+          extensions: [ ".py" ]
     - anthropic:
-        name: "anthropic"
-        url: "https://github.com/alexrudall/anthropic"
-        path: "alexrudall/anthropic/anthropic"
-        extensions: [".py"]
+          url: "https://github.com/alexrudall/anthropic"
+          name: "anthropic"
+          path: "anthropic"
+          extensions: [ ".py" ]
     - onnx:
-        name: "onnx"
-        url: "https://github.com/onnx/onnx"
-        path: "onnx/onnx/onnx"
-        extensions: [".py"]
+          url: "https://github.com/onnx/onnx"
+          name: "onnx"
+          path: "onnx"
+          extensions: [ ".py" ]
     - markdown:
-        name: "markdown"
-        url: "https://github.com/younghz/Markdown"
-        path: "younghz/Markdown/markdown"
-        extensions: [".py"]
+          url: "https://github.com/younghz/Markdown"
+          name: "markdown"
+          path: "markdown"
+          extensions: [ ".py" ]
     - psycopg2:
-        name: "psycopg2"
-        url: "https://github.com/psycopg/psycopg2"
-        path: "psycopg/psycopg2/psycopg2"
-        extensions: [".py"]
+          url: "https://github.com/psycopg/psycopg2"
+          name: "psycopg2"
+          path: "psycopg2"
+          extensions: [ ".py" ]
     - PyPDF2:
-        name: "PyPDF2"
-        url: "https://github.com/colemana/PyPDF2"
-        path: "colemana/PyPDF2/PyPDF2"
-        extensions: [".py"]
+          url: "https://github.com/colemana/PyPDF2"
+          name: "PyPDF2"
+          path: "PyPDF2"
+          extensions: [ ".py" ]
     - qrcode:
-        name: "qrcode"
-        url: "https://github.com/PaulKinlan/qrcode"
-        path: "PaulKinlan/qrcode/qrcode"
-        extensions: [".py"]
+          url: "https://github.com/PaulKinlan/qrcode"
+          name: "qrcode"
+          path: "qrcode"
+          extensions: [ ".py" ]
     - soupsieve:
-        name: "soupsieve"
-        url: "https://github.com/facelessuser/soupsieve"
-        path: "facelessuser/soupsieve/soupsieve"
-        extensions: [".py"]
+          url: "https://github.com/facelessuser/soupsieve"
+          name: "soupsieve"
+          path: "soupsieve"
+          extensions: [ ".py" ]
     - python-multipart:
-        name: "python-multipart"
-        url: "https://github.com/Kludex/python-multipart"
-        path: "Kludex/python-multipart/python-multipart"
-        extensions: [".py"]
+          url: "https://github.com/Kludex/python-multipart"
+          name: "python-multipart"
+          path: "python-multipart"
+          extensions: [ ".py" ]
     - babel:
-        name: "babel"
-        url: "https://github.com/babel/babel"
-        path: "babel/babel/babel"
-        extensions: [".py"]
+          url: "https://github.com/babel/babel"
+          name: "babel"
+          path: "babel"
+          extensions: [ ".py" ]
     - jsonschema:
-        name: "jsonschema"
-        url: "https://github.com/python-jsonschema/jsonschema"
-        path: "python-jsonschema/jsonschema/jsonschema"
-        extensions: [".py"]
+          url: "https://github.com/python-jsonschema/jsonschema"
+          name: "jsonschema"
+          path: "jsonschema"
+          extensions: [ ".py" ]
     - toml:
-        name: "toml"
-        url: "https://github.com/toml-lang/toml"
-        path: "toml-lang/toml/toml"
-        extensions: [".py"]
-
+          url: "https://github.com/toml-lang/toml"
+          name: "toml"
+          path: "toml"
+          extensions: [ ".py" ]
 output_file: "data/data_3.json"
 
 output_tokenized: "data/data_3_tokenized.json"
