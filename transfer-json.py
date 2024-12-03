@@ -3,9 +3,9 @@
 import json
 
 # 输入文件名，输出文件名，以及content字段的截取长度
-input_file_name = 'data/data_3.json'
-output_file_name = 'data/data_3.jsonl'
-content_cut_length = 10000000 # 如果需要更改截断长度，请修改该变量
+input_file_name = 'data/data_1.json'
+output_file_name = 'data/data_1.jsonl'
+content_cut_length = 100000000000 # 如果需要更改截断长度，请修改该变量
 
 def process_json_file(input_file, output_file, cut_length):
     # 打开输入文件并读取数据

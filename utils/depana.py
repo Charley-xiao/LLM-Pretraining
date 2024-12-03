@@ -54,7 +54,7 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
     
     def parse_imports(self, file_path):
         """ Parse import statements from a Python file using AST """
-        with open(file_path, "r", encoding="utf-8") as file:
+        with open(file_path, "r", encoding="utf-8",errors='ignore') as file:
             file_content = file.read()
         tree = ast.parse(file_content)
         imports = set()

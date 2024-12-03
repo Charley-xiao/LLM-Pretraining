@@ -53,33 +53,119 @@ def repo_to_json(repo_path, repo_name, extensions, output_file=None):
         save_to_json(data, output_file)
     return data
 
-def all_repos_to_json(repos, output_file, setting=2):
-    """ Preprocess all repositories and save the data to JSON files """
-    data = []
-    for repo in repos:
+# def all_repos_to_json(repos, output_file, setting=2):
+#     """ Preprocess all repositories and save the data to JSON files """
+#     data = []
+
+
+#     for repo in repos:
+#         repo_path = repo['path']
+#         repo_name = repo['name']
+#         extensions = repo['extensions']
+#         print(f"Processing {repo_name} at {repo_path}")
+#         repo_data = repo_to_json(repo_path, repo_name, extensions)
+#         print(f"Processed {repo_name} with {len(repo_data)} files")
+#         if setting == 3:
+#             print(f"Organizing files in {repo_name} topologically")
+#             # Organize files reversely topologically
+#             from .depana import get_dependency_graph, visualize_graph
+#             import networkx as nx
+#             try:
+#                 graph_py = get_dependency_graph(repo_path, 'python')
+#                 graph_java = get_dependency_graph(repo_path, 'java')
+#             except SyntaxError:
+#                 print(f"Syntax error in {repo_name}. Skipping dependency graph")
+#                 continue
+#             graph = nx.compose(graph_py, graph_java)
+#             print(f"Visualizing dependency graph for {repo_name}")
+#             visualize_graph(graph, save_path=f"data/graph_{repo_name}.png")
+#             # Eliminate self-loops
+#             graph.remove_edges_from(nx.selfloop_edges(graph))
+#             # Eliminate cycles
+#             cycles = list(nx.simple_cycles(graph))
+#             for cycle in cycles:
+#                 if len(cycle) > 1:
+#                     for i in range(len(cycle) - 1):
+#                         try:
+#                             graph.remove_edge(cycle[i], cycle[i + 1])
+#                         except nx.NetworkXError:
+#                             pass
+#                     try:
+#                         graph.remove_edge(cycle[-1], cycle[0])
+#                     except nx.NetworkXError:
+#                         pass
+#             sorted_files = list(nx.topological_sort(graph))
+#             def cmp(file):
+#                 try:
+#                     return -sorted_files.index(file['file_path'])
+#                 except ValueError:
+#                     return len(sorted_files)
+#             repo_data = sorted(repo_data, key=cmp)
+#             visualize_graph(graph, save_path=f"data/graph_{repo_name}_final.png")
+#         elif setting == 2:
+#             random.shuffle(repo_data)
+#         data.extend(repo_data)
+    
+#     if setting == 1:
+#         random.shuffle(data)
+
+#     with open(output_file, 'w', encoding='utf-8') as f:
+#         json.dump(data, f, indent=4)
+#     return data
+
+
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import networkx as nx
+
+def all_repos_to_json(repos, output_file, setting=2, num_cpus=None):
+    """
+    Preprocess all repositories and save the data to JSON files
+    """
+    # 创建一个与repos长度相同的结果列表，初始化为None
+    data = [None] * len(repos)
+
+
+
+    with ProcessPoolExecutor(max_workers=num_cpus) as executor:
+        # 提交任务时传入索引
+        futures = [executor.submit(process_repo, i, repo, setting) for i, repo in enumerate(repos)]
+        
+        # 按原始顺序收集结果
+        for future in as_completed(futures):
+            index, repo_data = future.result()
+            data[index] = repo_data
+
+    # 展平结果列表
+    data = [item for sublist in data for item in sublist]
+
+    if setting == 1:
+        random.shuffle(data)
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4)
+    return data
+
+def process_repo(index, repo,setting=3):
         repo_path = repo['path']
         repo_name = repo['name']
         extensions = repo['extensions']
         print(f"Processing {repo_name} at {repo_path}")
         repo_data = repo_to_json(repo_path, repo_name, extensions)
         print(f"Processed {repo_name} with {len(repo_data)} files")
+        
         if setting == 3:
             print(f"Organizing files in {repo_name} topologically")
-            # Organize files reversely topologically
             from .depana import get_dependency_graph, visualize_graph
-            import networkx as nx
             try:
                 graph_py = get_dependency_graph(repo_path, 'python')
                 graph_java = get_dependency_graph(repo_path, 'java')
             except SyntaxError:
                 print(f"Syntax error in {repo_name}. Skipping dependency graph")
-                continue
+                return repo_data
             graph = nx.compose(graph_py, graph_java)
             print(f"Visualizing dependency graph for {repo_name}")
             visualize_graph(graph, save_path=f"data/graph_{repo_name}.png")
-            # Eliminate self-loops
             graph.remove_edges_from(nx.selfloop_edges(graph))
-            # Eliminate cycles
             cycles = list(nx.simple_cycles(graph))
             for cycle in cycles:
                 if len(cycle) > 1:
@@ -102,14 +188,8 @@ def all_repos_to_json(repos, output_file, setting=2):
             visualize_graph(graph, save_path=f"data/graph_{repo_name}_final.png")
         elif setting == 2:
             random.shuffle(repo_data)
-        data.extend(repo_data)
-    
-    if setting == 1:
-        random.shuffle(data)
-
-    with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
-    return data
+        
+        return index, repo_data
 
 if __name__ == '__main__':
     repos = [

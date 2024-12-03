@@ -481,8 +481,8 @@ repos:
           name: "toml"
           path: "toml"
           extensions: [ ".py" ]
-output_file: "data/data_3.json"
+output_file: "data/data_1.json"
 
-output_tokenized: "data/data_3_tokenized.json"
-output_mmap: "data/data_3.mmap"
-num_workers: 30
+output_tokenized: "data/data_1_tokenized.json"
+output_mmap: "data/data_1.mmap"
+num_workers: 50
