@@ -169,7 +169,10 @@ def visualize_graph(graph, save_path=None):
     pos = nx.spring_layout(graph, iterations=100)
     nx.draw(graph, pos, with_labels=True, node_size=2000, font_size=10, node_color='skyblue', edge_color='black', alpha=0.7)
     if save_path:
-        plt.savefig(save_path)
+        if not os.path.exists(save_path):
+            plt.savefig(save_path)
+        else:
+            print(f"File {save_path} already exists. Skipping save.")
     else:
         plt.show()
     plt.close()
