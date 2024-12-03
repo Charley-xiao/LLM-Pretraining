@@ -12,7 +12,7 @@ import tarfile
 import argparse
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument("--config", type=str, default="cfg/preprocess.yaml", help="Path to the configuration file")
+argparser.add_argument("--config", type=str, default="cfg/preprocess-pro.yaml", help="Path to the configuration file")
 argparser.add_argument("-y", action='store_true', help="Skip confirmation")
 args = argparser.parse_args()
 
@@ -112,10 +112,11 @@ def main():
                     "extensions": extensions
                 })
 
-            repos_dict = all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'])
+            repos_dict = all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'], num_cpus=config['num_workers'])
 
             with open(config['output_file'], 'w') as file:
                 json.dump(repos_dict, file)
+                print('='* 50)
             data = repos_dict
         else: 
             if not os.path.exists(config['repos_dir']):
@@ -180,34 +181,34 @@ def main():
     # TODO: PII redaction
     # TODO: Decontamination 
 
-    num_workers = config.get('num_workers', os.cpu_count())
-    print(f"Using {num_workers} workers for tokenization")
+    # num_workers = config.get('num_workers', os.cpu_count())
+    # print(f"Using {num_workers} workers for tokenization")
 
-    pool = multiprocessing.Pool(
-        processes=num_workers,
-        initializer=init_worker,
-        initargs=(config,)
-    )
-    tokenized_data = pool.map(tokenize_item, data)
-    pool.close()
-    pool.join()
+    # pool = multiprocessing.Pool(
+    #     processes=num_workers,
+    #     initializer=init_worker,
+    #     initargs=(config,)
+    # )
+    # tokenized_data = pool.map(tokenize_item, data)
+    # pool.close()
+    # pool.join()
 
-    np.save(config['output_tokenized'], tokenized_data)
+    # np.save(config['output_tokenized'], tokenized_data)
 
-    flat_data = np.array([token for tokens in tokenized_data for token in tokens], dtype=np.int32)
+    # flat_data = np.array([token for tokens in tokenized_data for token in tokens], dtype=np.int32)
 
-    mmapped_file = np.memmap(
-        config['output_mmap'],
-        dtype=np.int32,
-        mode='w+',
-        shape=flat_data.shape
-    )
-    mmapped_file[:] = flat_data[:]
-    del mmapped_file
+    # mmapped_file = np.memmap(
+    #     config['output_mmap'],
+    #     dtype=np.int32,
+    #     mode='w+',
+    #     shape=flat_data.shape
+    # )
+    # mmapped_file[:] = flat_data[:]
+    # del mmapped_file
 
-    print(f"Data saved to {config['output_tokenized']} and {config['output_mmap']}")
+    # print(f"Data saved to {config['output_tokenized']} and {config['output_mmap']}")
 
-    visualize_tokenization(data, tokenized_data)
+    # visualize_tokenization(data, tokenized_data)
 
     print("Preprocessing successfully completed!")
 

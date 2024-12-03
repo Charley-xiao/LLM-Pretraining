@@ -16,7 +16,11 @@ max_length: 100000 # 最大长度
 truncation: True # 是否截断
 
 use_cache: False # 是否使用已有的json缓存
-setting: 2 # 消融实验
+setting: 2  # 消融实验. 
+            # setting=3, 仓库排序 & 仓库内文件排序
+            # setting=2, 仓库排序 & 仓库内文件乱序
+            # setting=1, 仓库&仓库内文件乱序
+            
 data_file: "data/data_2.json" # 如果use_cache为True，将使用该文件
 
 repos_dir: "repos" # 存放repo的目录
