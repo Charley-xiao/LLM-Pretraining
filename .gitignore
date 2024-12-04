@@ -2,4 +2,5 @@
 *.pyc
 /data
 /repos
+/data-backup
 *.zip

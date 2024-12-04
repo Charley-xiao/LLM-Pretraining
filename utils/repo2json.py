@@ -122,21 +122,6 @@ def process_repo(index, repo, setting=3, num_cpus=None):
                 graph = pickle.load(f)
             print(f"Loaded dependency graph from cache for {repo_name}")
         else:
-<<<<<<< HEAD
-            print(f"Not Loaded {cache_path}, not exist")
-            try:
-                graph_py = get_dependency_graph(repo_path, 'python')
-                graph_java = get_dependency_graph(repo_path, 'java')
-                graph = nx.compose(graph_py, graph_java)
-
-                with open(cache_path, 'wb') as f:
-                    pickle.dump(graph, f)
-            except SyntaxError:
-                print(f"Syntax error in {repo_name}. Skipping dependency graph")
-                return index, repo_data
-
-        print(f"Visualizing dependency graph for {repo_name}")
-=======
             start_time = time.time()
             graph_py = get_dependency_graph(repo_path, 'python')
             print(f"Python graph for {repo_name} built in {time.time() - start_time:.2f} seconds")
@@ -147,11 +132,6 @@ def process_repo(index, repo, setting=3, num_cpus=None):
             print(f"Combined graph for {repo_name} built")
             with open(cache_path, 'wb') as f:
                 pickle.dump(graph, f)
-
-        # print(f"Visualizing dependency graph for {repo_name}")
->>>>>>> 0d3f64c... Add logging
-        # visualize_graph(graph, save_path=f"data/graph_{repo_name}.png")
-
         graph.remove_edges_from(nx.selfloop_edges(graph))
         cycles = list(nx.simple_cycles(graph))
 
