@@ -121,6 +121,7 @@ def process_repo(index, repo, setting=3, num_cpus=None):
                 graph = pickle.load(f)
             print(f"Loaded dependency graph from cache for {repo_name}")
         else:
+            print(f"Not Loaded {cache_path}, not exist")
             try:
                 graph_py = get_dependency_graph(repo_path, 'python')
                 graph_java = get_dependency_graph(repo_path, 'java')
