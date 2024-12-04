@@ -4,6 +4,7 @@ import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import pickle
 import sys
+import time 
 from concurrent.futures import ProcessPoolExecutor
 import networkx as nx
 
@@ -121,18 +122,18 @@ def process_repo(index, repo, setting=3, num_cpus=None):
                 graph = pickle.load(f)
             print(f"Loaded dependency graph from cache for {repo_name}")
         else:
-            try:
-                graph_py = get_dependency_graph(repo_path, 'python')
-                graph_java = get_dependency_graph(repo_path, 'java')
-                graph = nx.compose(graph_py, graph_java)
+            start_time = time.time()
+            graph_py = get_dependency_graph(repo_path, 'python')
+            print(f"Python graph for {repo_name} built in {time.time() - start_time:.2f} seconds")
+            start_time = time.time()
+            graph_java = get_dependency_graph(repo_path, 'java')
+            print(f"Java graph for {repo_name} built in {time.time() - start_time:.2f} seconds")
+            graph = nx.compose(graph_py, graph_java)
+            print(f"Combined graph for {repo_name} built")
+            with open(cache_path, 'wb') as f:
+                pickle.dump(graph, f)
 
-                with open(cache_path, 'wb') as f:
-                    pickle.dump(graph, f)
-            except SyntaxError:
-                print(f"Syntax error in {repo_name}. Skipping dependency graph")
-                return index, repo_data
-
-        print(f"Visualizing dependency graph for {repo_name}")
+        # print(f"Visualizing dependency graph for {repo_name}")
         # visualize_graph(graph, save_path=f"data/graph_{repo_name}.png")
 
         graph.remove_edges_from(nx.selfloop_edges(graph))

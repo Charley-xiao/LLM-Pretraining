@@ -56,6 +56,7 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
 
     def parse_imports(self, file_path):
         """Parse import statements from a Python file using AST"""
+        print(f"Parsing file {file_path}")
         with open(file_path, "r", encoding="utf-8", errors='ignore') as file:
             file_content = file.read()
         try:
@@ -135,6 +136,7 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
 
     def parse_imports(self, file_path):
         """Parse import statements from a Java file"""
+        print(f"Parsing file {file_path}")
         with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
             file_content = file.read()
 
