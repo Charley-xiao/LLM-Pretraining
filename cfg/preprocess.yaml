@@ -136,14 +136,11 @@ repos:
           name: "click"
           path: "click"
           extensions: [ ".py" ]
-<<<<<<< HEAD
-=======
     - lxml:
           url: "https://github.com/lxml/lxml"
           name: "lxml"
           path: "lxml"
           extensions: [ ".py" ]
->>>>>>> 53f30a8... readme增加了少量内容，修复preprocess.yaml，可以运行
     - jinja2:
           url: "https://github.com/mattrobenolt/jinja2-cli"
           name: "jinja2"
@@ -394,14 +391,11 @@ repos:
           name: "nltk"
           path: "nltk"
           extensions: [ ".py" ]
-<<<<<<< HEAD
-=======
     - langchain:
           url: "https://github.com/langchain-ai/langchain"
           name: "langchain"
           path: "langchain"
           extensions: [ ".py" ]
->>>>>>> 53f30a8... readme增加了少量内容，修复preprocess.yaml，可以运行
     - h11:
           url: "https://github.com/python-hyper/h11"
           name: "h11"
@@ -497,16 +491,10 @@ repos:
           name: "toml"
           path: "toml"
           extensions: [ ".py" ]
-<<<<<<< HEAD
+          
 output_file: "data/data_1.json"
 
 output_tokenized: "data/data_1_tokenized.json"
 output_mmap: "data/data_1.mmap"
 num_workers: 50
-=======
-output_file: "data/data_3.json"
 
-output_tokenized: "data/data_3_tokenized.json"
-output_mmap: "data/data_3.mmap"
-num_workers: 30
->>>>>>> 53f30a8... readme增加了少量内容，修复preprocess.yaml，可以运行

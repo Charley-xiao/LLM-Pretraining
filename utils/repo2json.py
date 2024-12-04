@@ -14,7 +14,7 @@ def collect_files(repo_path, extensions):
 def read_file_content(filepath):
     """ Read the content of a file """
     try:
-        with open(filepath, 'r', encoding='utf-8',errors='ignore') as file:
+        with open(filepath, 'r', encoding='utf-8', errors='ignore') as file:
             return file.read()
     except Exception as e:
         print('!' * 80)
@@ -187,7 +187,6 @@ def process_repo(index, repo, setting=3):
             visualize_graph(graph, save_path=f"data/graph_{repo_name}.png")
 
             graph.remove_edges_from(nx.selfloop_edges(graph))
-
             cycles = list(nx.simple_cycles(graph))
 
             for cycle in cycles:
