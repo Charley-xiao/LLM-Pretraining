@@ -53,8 +53,14 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
         return python_files
     
     def parse_imports(self, file_path):
+<<<<<<< HEAD
         """ Parse import statements from a Python file using AST """
         with open(file_path, "r", encoding="utf-8",errors='ignore') as file:
+=======
+        """Parse import statements from a Python file using AST"""
+        print(f"Parsing file {file_path}")
+        with open(file_path, "r", encoding="utf-8", errors='ignore') as file:
+>>>>>>> 0d3f64c... Add logging
             file_content = file.read()
         tree = ast.parse(file_content)
         imports = set()
@@ -110,8 +116,14 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         return java_files
     
     def parse_imports(self, file_path):
+<<<<<<< HEAD
         """ Parse import statements from a Java file """
         with open(file_path, "r", encoding="utf-8") as file:
+=======
+        """Parse import statements from a Java file"""
+        print(f"Parsing file {file_path}")
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
+>>>>>>> 0d3f64c... Add logging
             file_content = file.read()
         
         imports = set(re.findall(r'^import\s+([\w\.]+);', file_content, re.MULTILINE))
