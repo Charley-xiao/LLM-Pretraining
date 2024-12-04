@@ -14,12 +14,13 @@ def collect_files(repo_path, extensions):
 def read_file_content(filepath):
     """ Read the content of a file """
     try:
-        with open(filepath, 'r', encoding='utf-8') as file:
+        with open(filepath, 'r', encoding='utf-8', errors='ignore') as file:
             return file.read()
-    except UnicodeDecodeError as e:
+    except Exception as e:
         print('!' * 80)
         print(f"UnicodeDecodeError in file {filepath}: {e}")
         return ""  # Return empty string or handle the error as needed
+    
 
 def create_json_entry(filepath, repo_name, language):
     """ Create a JSON entry for a file """
@@ -124,16 +125,21 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None):
     # 创建一个与repos长度相同的结果列表，初始化为None
     data = [None] * len(repos)
 
-
-
     with ProcessPoolExecutor(max_workers=num_cpus) as executor:
         # 提交任务时传入索引
         futures = [executor.submit(process_repo, i, repo, setting) for i, repo in enumerate(repos)]
         
         # 按原始顺序收集结果
         for future in as_completed(futures):
-            index, repo_data = future.result()
-            data[index] = repo_data
+            try:
+                index, repo_data = future.result()
+                data[index] = repo_data
+            except Exception as e:
+                print(e)
+                print(e)
+                print(e)
+                print(e)
+                sys.exit(0)
 
     # 展平结果列表
     data = [item for sublist in data for item in sublist]
@@ -145,7 +151,7 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None):
         json.dump(data, f, indent=4)
     return data
 
-def process_repo(index, repo,setting=3):
+def process_repo(index, repo, setting=3):
         repo_path = repo['path']
         repo_name = repo['name']
         extensions = repo['extensions']
@@ -156,17 +162,33 @@ def process_repo(index, repo,setting=3):
         if setting == 3:
             print(f"Organizing files in {repo_name} topologically")
             from .depana import get_dependency_graph, visualize_graph
-            try:
-                graph_py = get_dependency_graph(repo_path, 'python')
-                graph_java = get_dependency_graph(repo_path, 'java')
-            except SyntaxError:
-                print(f"Syntax error in {repo_name}. Skipping dependency graph")
-                return repo_data
-            graph = nx.compose(graph_py, graph_java)
+            
+            cache_path = f"data/dependency_graph_{repo_name}.pkl"
+
+            # 检查缓存是否存在
+            if os.path.exists(cache_path):
+                with open(cache_path, 'rb') as f:
+                    graph = pickle.load(f)
+                print(f"Loaded dependency graph from cache for {repo_name}")
+            else:
+                try:
+                    graph_py = get_dependency_graph(repo_path, 'python')
+                    graph_java = get_dependency_graph(repo_path, 'java')
+                    graph = nx.compose(graph_py, graph_java)
+
+                    # 保存缓存
+                    with open(cache_path, 'wb') as f:
+                        pickle.dump(graph, f)
+                except SyntaxError:
+                    print(f"Syntax error in {repo_name}. Skipping dependency graph")
+                    return index, repo_data
+
             print(f"Visualizing dependency graph for {repo_name}")
             visualize_graph(graph, save_path=f"data/graph_{repo_name}.png")
+
             graph.remove_edges_from(nx.selfloop_edges(graph))
             cycles = list(nx.simple_cycles(graph))
+
             for cycle in cycles:
                 if len(cycle) > 1:
                     for i in range(len(cycle) - 1):
@@ -179,6 +201,7 @@ def process_repo(index, repo,setting=3):
                     except nx.NetworkXError:
                         pass
             sorted_files = list(nx.topological_sort(graph))
+
             def cmp(file):
                 try:
                     return -sorted_files.index(file['file_path'])
@@ -186,6 +209,7 @@ def process_repo(index, repo,setting=3):
                     return len(sorted_files)
             repo_data = sorted(repo_data, key=cmp)
             visualize_graph(graph, save_path=f"data/graph_{repo_name}_final.png")
+
         elif setting == 2:
             random.shuffle(repo_data)
         

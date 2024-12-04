@@ -136,6 +136,11 @@ repos:
           name: "click"
           path: "click"
           extensions: [ ".py" ]
+    - lxml:
+          url: "https://github.com/lxml/lxml"
+          name: "lxml"
+          path: "lxml"
+          extensions: [ ".py" ]
     - jinja2:
           url: "https://github.com/mattrobenolt/jinja2-cli"
           name: "jinja2"
@@ -386,6 +391,11 @@ repos:
           name: "nltk"
           path: "nltk"
           extensions: [ ".py" ]
+    - langchain:
+          url: "https://github.com/langchain-ai/langchain"
+          name: "langchain"
+          path: "langchain"
+          extensions: [ ".py" ]
     - h11:
           url: "https://github.com/python-hyper/h11"
           name: "h11"
@@ -481,8 +491,10 @@ repos:
           name: "toml"
           path: "toml"
           extensions: [ ".py" ]
+          
 output_file: "data/data_1.json"
 
 output_tokenized: "data/data_1_tokenized.json"
 output_mmap: "data/data_1.mmap"
 num_workers: 50
+
