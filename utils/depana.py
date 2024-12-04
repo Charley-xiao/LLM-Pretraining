@@ -1,10 +1,10 @@
 import os
-import ast
+# import ast
 import networkx as nx
 import matplotlib.pyplot as plt
 import re
 import pickle 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, as_completed
 import hashlib 
 import json 
 
@@ -110,7 +110,7 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
         nodes = []
         edges = []
 
-        with ThreadPoolExecutor() as executor:
+        with ProcessPoolExecutor() as executor:
             future_to_file = {executor.submit(self.process_file, file): file for file in python_files}
 
             for future in as_completed(future_to_file):
@@ -159,6 +159,8 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
             file_content = file.read()
 
         # Use regex to extract import statements
+        file_content = file_content.split('public class')[0]  # Ignore everything after the class definition
+        file_content = file_content.split('interface')[0]  # Ignore everything after the interface definition
         imports = set(re.findall(r'^import\s+([\w\.]+);', file_content, re.MULTILINE))
 
         sha256_hash = hashlib.sha256(file_path.encode('utf-8')).hexdigest()
@@ -190,7 +192,7 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         nodes = []
         edges = []
 
-        with ThreadPoolExecutor() as executor:
+        with ProcessPoolExecutor() as executor:
             # Submit tasks to process each file
             future_to_file = {executor.submit(self.process_file, file): file for file in java_files}
 
