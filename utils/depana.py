@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import re
 import pickle 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import hashlib 
+import json 
 
 
 class DependencyAnalyzer:
@@ -55,24 +57,36 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
         return python_files
 
     def parse_imports(self, file_path):
-        """ Parse import statements from a Python file using AST """
+        """Parse import statements from a Python file using regular expressions"""
         print(f"Parsing file {file_path}")
-        with open(file_path, "r", encoding="utf-8",errors='ignore') as file:
-            file_content = file.read()
-        try:
-            tree = ast.parse(file_content)
-        except SyntaxError as e:
-            print(f"Syntax error parsing file {file_path}: {e}. Returning empty set.")
+        
+        cache_dir = 'import_cache'
+        cache_file = f'{cache_dir}/{hashlib.sha256(file_path.encode("utf-8")).hexdigest()}.json'
+        if os.path.exists(cache_file):
+            print(f"Found cached imports for {file_path}. Loading from cache.")
+            with open(cache_file, 'r') as f:
+                return set(json.load(f))
+        
+        if not os.path.exists(file_path):
+            print(f"File {file_path} does not exist. Returning empty set.")
             return set()
-        imports = set()
-
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Import):
-                for alias in node.names:
-                    imports.add(alias.name)
-            elif isinstance(node, ast.ImportFrom):
-                imports.add(node.module)
-
+        
+        with open(file_path, "r", encoding="utf-8", errors='ignore') as file:
+            file_content = file.read()
+        
+        import_pattern = r'^\s*(?:import\s+([\w\.]+)|from\s+([\w\.]+)\s+import)'
+        matches = re.findall(import_pattern, file_content, re.MULTILINE)
+        
+        imports = set(filter(None, [match[0] or match[1] for match in matches]))
+        print(f"Found {len(imports)} imports in {file_path}")
+        print(imports)
+        
+        if not os.path.exists(cache_dir):
+            os.makedirs(cache_dir)
+        with open(cache_file, 'w') as f:
+            json.dump(list(imports), f)
+            print(f"Saved imports for {file_path} to {cache_file}")
+        
         return imports
 
     def process_file(self, file):
@@ -135,13 +149,24 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         return java_files
 
     def parse_imports(self, file_path):
-        """ Parse import statements from a Java file """
+        """Parse import statements from a Java file"""
         print(f"Parsing file {file_path}")
-        with open(file_path, "r", encoding="utf-8") as file:
+        if os.path.exists(f'import_cache/{hashlib.sha256(file_path.encode("utf-8")).hexdigest()}.json'):
+            print(f"Found cached imports for {file_path}. Loading from cache.")
+            with open(f'import_cache/{hashlib.sha256(file_path.encode("utf-8")).hexdigest()}.json', 'r') as f:
+                return set(json.load(f))
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
             file_content = file.read()
 
         # Use regex to extract import statements
         imports = set(re.findall(r'^import\s+([\w\.]+);', file_content, re.MULTILINE))
+
+        sha256_hash = hashlib.sha256(file_path.encode('utf-8')).hexdigest()
+        if not os.path.exists('import_cache'):
+            os.makedirs('import_cache')
+        with open(f'import_cache/{sha256_hash}.json', 'w') as f:
+            json.dump(list(imports), f)
+            print(f"Saved imports for {file_path} to import_cache/{sha256_hash}.json")
         return imports
 
     def process_file(self, file):
