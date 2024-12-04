@@ -2630,4 +2630,4 @@ output_file: "data/data_3-pro.json"
 
 output_tokenized: "data/data_3_tokenized-pro.json"
 output_mmap: "data/data_3-pro.mmap"
-num_workers: 180
+num_workers: 150
