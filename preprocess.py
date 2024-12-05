@@ -112,7 +112,7 @@ def main():
                     "extensions": extensions
                 })
 
-            repos_dict = all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'], num_cpus=config['num_workers'])
+            repos_dict = all_repos_to_json(repos_dict, config['data_file'], setting=config['setting'], num_cpus=config['num_cpus'], num_workers=config['num_workers'])
 
             with open(config['output_file'], 'w') as file:
                 json.dump(repos_dict, file)

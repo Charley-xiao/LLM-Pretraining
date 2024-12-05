@@ -1,4 +1,6 @@
 import os
+from concurrent.futures.thread import ThreadPoolExecutor
+
 # import ast
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -10,9 +12,10 @@ import json
 
 
 class DependencyAnalyzer:
-    def __init__(self, repo_path):
+    def __init__(self, repo_path, num_workers=1):
         self.repo_path = repo_path
         self.graph = nx.DiGraph()
+        self.num_workers = num_workers
 
     def get_files(self):
         """ Recursively collect all files in the repository """
@@ -43,8 +46,8 @@ class DependencyAnalyzer:
 
 
 class PythonDependencyAnalyzer(DependencyAnalyzer):
-    def __init__(self, repo_path):
-        super().__init__(repo_path)
+    def __init__(self, repo_path, num_workers):
+        super().__init__(repo_path, num_workers)
         self.graph = nx.DiGraph()
 
     def get_files(self):
@@ -110,7 +113,7 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
         nodes = []
         edges = []
 
-        with ProcessPoolExecutor() as executor:
+        with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
             future_to_file = {executor.submit(self.process_file, file): file for file in python_files}
 
             for future in as_completed(future_to_file):
@@ -135,8 +138,8 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
     
 
 class JavaDependencyAnalyzer(DependencyAnalyzer):
-    def __init__(self, repo_path):
-        super().__init__(repo_path)
+    def __init__(self, repo_path, num_workers):
+        super().__init__(repo_path, num_workers)
         self.graph = nx.DiGraph()
 
     def get_files(self):
@@ -192,7 +195,7 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         nodes = []
         edges = []
 
-        with ProcessPoolExecutor() as executor:
+        with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
             # Submit tasks to process each file
             future_to_file = {executor.submit(self.process_file, file): file for file in java_files}
 
@@ -218,11 +221,11 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         return None
     
 
-def get_dependency_graph(repo_path, language) -> nx.DiGraph:
+def get_dependency_graph(repo_path, language, num_workers) -> nx.DiGraph:
     if language == 'python':
-        analyzer = PythonDependencyAnalyzer(repo_path)
+        analyzer = PythonDependencyAnalyzer(repo_path, num_workers)
     elif language == 'java':
-        analyzer = JavaDependencyAnalyzer(repo_path)
+        analyzer = JavaDependencyAnalyzer(repo_path, num_workers)
     else:
         raise ValueError("Unsupported language for dependency analysis")
     
