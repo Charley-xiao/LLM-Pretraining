@@ -83,9 +83,9 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
         
         if not os.path.exists(cache_dir):
             os.makedirs(cache_dir)
-        with open(cache_file, 'w') as f:
-            json.dump(list(imports), f)
-            print(f"Saved imports for {file_path} to {cache_file}")
+        # with open(cache_file, 'w') as f:
+        #     json.dump(list(imports), f)
+        #     print(f"Saved imports for {file_path} to {cache_file}")
         
         return imports
 
@@ -164,9 +164,9 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         sha256_hash = hashlib.sha256(file_path.encode('utf-8')).hexdigest()
         if not os.path.exists('import_cache'):
             os.makedirs('import_cache')
-        with open(f'import_cache/{sha256_hash}.json', 'w') as f:
-            json.dump(list(imports), f)
-            print(f"Saved imports for {file_path} to import_cache/{sha256_hash}.json")
+        # with open(f'import_cache/{sha256_hash}.json', 'w') as f:
+            # json.dump(list(imports), f)
+            # print(f"Saved imports for {file_path} to import_cache/{sha256_hash}.json")
         return imports
 
     def process_file(self, file):
