@@ -51,13 +51,13 @@ def process_file(file, repo_name):
     entry = create_json_entry(file, repo_name, language)
     return entry
 
-def repo_to_json(repo_path, repo_name, extensions, output_file=None, num_cpus=None):
+def repo_to_json(repo_path, repo_name, extensions, output_file=None, num_workers=None):
     """ Preprocess a repository and save the data to a JSON file """
     files = collect_files(repo_path, extensions)
     print(f"Found {len(files)} files in {repo_name}")
 
     data = []
-    max_workers = num_cpus or os.cpu_count() 
+    max_workers = num_workers if num_workers else os.cpu_count()
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_file = {executor.submit(process_file, file, repo_name): file for file in files}
@@ -73,7 +73,7 @@ def repo_to_json(repo_path, repo_name, extensions, output_file=None, num_cpus=No
         save_to_json(data, output_file)
     return data
 
-def all_repos_to_json(repos, output_file, setting=2, num_cpus=None):
+def all_repos_to_json(repos, output_file, setting=2, num_cpus=None, num_workers=None):
     """
     Preprocess all repositories and save the data to JSON files
     """
@@ -82,7 +82,7 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None):
 
     with ProcessPoolExecutor(max_workers=num_cpus) as executor:
         # 提交任务时传入索引
-        futures = [executor.submit(process_repo, i, repo, setting, num_cpus) for i, repo in enumerate(repos)]
+        futures = [executor.submit(process_repo, i, repo, setting, num_workers) for i, repo in enumerate(repos)]
         
         # 按原始顺序收集结果
         for future in as_completed(futures):
@@ -103,12 +103,12 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None):
         json.dump(data, f, indent=4)
     return data
 
-def process_repo(index, repo, setting=3, num_cpus=None):
+def process_repo(index, repo, setting=3, num_workers=1):
     repo_path = repo['path']
     repo_name = repo['name']
     extensions = repo['extensions']
     print(f"Processing {repo_name} at {repo_path}")
-    repo_data = repo_to_json(repo_path, repo_name, extensions, num_cpus=num_cpus)
+    repo_data = repo_to_json(repo_path, repo_name, extensions, num_workers=num_workers)
     print(f"Processed {repo_name} with {len(repo_data)} files")
     
     if setting == 3:
@@ -123,12 +123,12 @@ def process_repo(index, repo, setting=3, num_cpus=None):
             print(f"Loaded dependency graph from cache for {repo_name}")
         else:
             start_time = time.time()
-            graph_py = get_dependency_graph(repo_path, 'python')
+            graph_py = get_dependency_graph(repo_path, 'python', num_workers=num_workers)
             print(f"Python graph for {repo_name} built in {time.time() - start_time:.2f} seconds")
             print(f"number of nodes: {len(graph_py.nodes)}")
             print(f"number of edges: {len(graph_py.edges)}")
             start_time = time.time()
-            graph_java = get_dependency_graph(repo_path, 'java')
+            graph_java = get_dependency_graph(repo_path, 'java', num_workers=num_workers)
             print(f"Java graph for {repo_name} built in {time.time() - start_time:.2f} seconds")
             print(f"number of nodes: {len(graph_java.nodes)}")
             print(f"number of edges: {len(graph_java.edges)}")
