@@ -10,8 +10,6 @@ import networkx as nx
 # 增加logging
 import logging
 
-from fontTools.ttx import process
-
 
 def collect_files(repo_path, extensions):
     """ Recursively collect all files with specified extensions in the repository """
@@ -85,7 +83,7 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None, num_workers=
     # 创建一个与repos长度相同的结果列表，初始化为None
     data = [None] * len(repos)
 
-    process_id = 0
+    process_id = 1
 
     with ProcessPoolExecutor(max_workers=num_cpus) as executor:
         # 提交任务时传入索引
@@ -94,7 +92,7 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None, num_workers=
         # 按原始顺序收集结果
         for future in as_completed(futures):
             try:
-                index, repo_data, process_id = future.result()
+                index, repo_data = future.result()
                 data[index] = repo_data
             except Exception as e:
                 print(e)
@@ -111,6 +109,7 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None, num_workers=
     return data
 
 def process_repo(index, repo, setting=3, num_workers=1, process_id=0):
+
     logging.DEBUG(f"Processing repo {index}\nPocess ID: {process_id}")
 
     repo_path = repo['path']
@@ -178,7 +177,7 @@ def process_repo(index, repo, setting=3, num_workers=1, process_id=0):
 
     logging.DEBUG(f"Finished processing repo {index}\nPocess ID: {process_id}")
 
-    return index, repo_data, process_id
+    return index, repo_data
 
 if __name__ == '__main__':
     repos = [
