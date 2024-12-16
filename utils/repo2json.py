@@ -6,7 +6,14 @@ import pickle
 import sys
 import time 
 from concurrent.futures import ProcessPoolExecutor
+from sys import thread_info
+
 import networkx as nx
+# 增加logging
+import logging
+
+from fontTools.ttx import process
+
 
 def collect_files(repo_path, extensions):
     """ Recursively collect all files with specified extensions in the repository """
@@ -58,9 +65,10 @@ def repo_to_json(repo_path, repo_name, extensions, output_file=None, num_workers
 
     data = []
     max_workers = num_workers if num_workers else os.cpu_count()
+    thread_id = 0
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        future_to_file = {executor.submit(process_file, file, repo_name): file for file in files}
+        future_to_file = {executor.submit(process_file, file, repo_name, thread_id): file for file in files}
         for future in as_completed(future_to_file):
             file = future_to_file[future]
             try:
@@ -80,14 +88,16 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None, num_workers=
     # 创建一个与repos长度相同的结果列表，初始化为None
     data = [None] * len(repos)
 
+    process_id = 0
+
     with ProcessPoolExecutor(max_workers=num_cpus) as executor:
         # 提交任务时传入索引
-        futures = [executor.submit(process_repo, i, repo, setting, num_workers) for i, repo in enumerate(repos)]
+        futures = [executor.submit(process_repo, i, repo, setting, num_workers, process_id) for i, repo in enumerate(repos)]
         
         # 按原始顺序收集结果
         for future in as_completed(futures):
             try:
-                index, repo_data = future.result()
+                index, repo_data, process_id = future.result()
                 data[index] = repo_data
             except Exception as e:
                 print(e)
@@ -103,7 +113,9 @@ def all_repos_to_json(repos, output_file, setting=2, num_cpus=None, num_workers=
         json.dump(data, f, indent=4)
     return data
 
-def process_repo(index, repo, setting=3, num_workers=1):
+def process_repo(index, repo, setting=3, num_workers=1, process_id=0):
+    logging.DEBUG(f"Processing repo {index}\nPocess ID: {process_id}")
+
     repo_path = repo['path']
     repo_name = repo['name']
     extensions = repo['extensions']
@@ -166,8 +178,10 @@ def process_repo(index, repo, setting=3, num_workers=1):
 
     elif setting == 2:
         random.shuffle(repo_data)
-    
-    return index, repo_data
+
+    logging.DEBUG(f"Finished processing repo {index}\nPocess ID: {process_id}")
+
+    return index, repo_data, process_id
 
 if __name__ == '__main__':
     repos = [
