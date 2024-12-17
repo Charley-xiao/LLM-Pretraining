@@ -292,7 +292,6 @@ def process_repo(index, repo, setting=3, num_workers=1):
             graph.remove_edges_from(nx.selfloop_edges(graph))
             cycles = list(nx.simple_cycles(graph))
 
-            logging.warning(f"Found {len(cycles)} cycles in {repo_name}")
             for cycle in cycles:
                 if len(cycle) > 1:
                     for i in range(len(cycle) - 1):
@@ -324,6 +323,7 @@ def process_repo(index, repo, setting=3, num_workers=1):
         print(f"Timeout for {repo_name}")
         # 使用setting=2的方式处理并返回
         random.shuffle(repo_data_bak)
+        logging.warning(f"Timeout for {repo_name}, use setting=2 to process")
         return index, repo_data_bak
     finally:
         signal.alarm(0)  # 取消闹钟
