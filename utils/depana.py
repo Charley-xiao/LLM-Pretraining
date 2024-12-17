@@ -167,8 +167,12 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
             print(f"Found cached imports for {file_path}. Loading from cache.")
             with open(f'import_cache/{hashlib.sha256(file_path.encode("utf-8")).hexdigest()}.json', 'r') as f:
                 return set(json.load(f))
+
+        from itertools import islice
+
+        # Read the first 100 lines of the file，降低内存占用
         with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
-            file_content = file.read()
+            file_content = ''.join(islice(file, 100))
 
         # Use regex to extract import statements
         file_content = file_content.split('public class')[0]  # Ignore everything after the class definition
@@ -204,25 +208,25 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         nodes = []
         edges = []
 
-        # with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
-        #     # Submit tasks to process each file
-        #     future_to_file = {executor.submit(self.process_file, file): file for file in java_files}
+        with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
+            # Submit tasks to process each file
+            future_to_file = {executor.submit(self.process_file, file): file for file in java_files}
 
-        #     for future in as_completed(future_to_file):
-        #         try:
-        #             file_node, file_edges = future.result()
-        #             nodes.append(file_node)
-        #             edges.extend(file_edges)
-        #         except Exception as e:
-        #             print(f"Error processing file {future_to_file[future]}: {e}")
+            for future in as_completed(future_to_file):
+                try:
+                    file_node, file_edges = future.result()
+                    nodes.append(file_node)
+                    edges.extend(file_edges)
+                except Exception as e:
+                    print(f"Error processing file {future_to_file[future]}: {e}")
 
-        for file in java_files:
-            try:
-                file_node, file_edges = self.process_file(file)
-                nodes.append(file_node)
-                edges.extend(file_edges)
-            except Exception as e:
-                print(f"处理文件 {file} 时出错: {e}")
+        # for file in java_files:
+        #     try:
+        #         file_node, file_edges = self.process_file(file)
+        #         nodes.append(file_node)
+        #         edges.extend(file_edges)
+        #     except Exception as e:
+        #         print(f"处理文件 {file} 时出错: {e}")
 
         # Build the graph
         self.graph.add_nodes_from(nodes)

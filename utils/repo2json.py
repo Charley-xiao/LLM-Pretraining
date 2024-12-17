@@ -14,7 +14,7 @@ import networkx as nx
 from networkx.algorithms.cycles import simple_cycles
 
 # 设置logging输出文件，设置输出格式
-logging.basicConfig(level=logging.INFO, filename='repo2json.log', filemode='w',
+logging.basicConfig(level=logging.INFO, filename='repo2json-kaifa.log', filemode='w',
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 def collect_files(repo_path, extensions):
@@ -250,7 +250,7 @@ def process_repo(index, repo, setting=3, num_workers=1):
         raise TimeoutError()
 
     signal.signal(signal.SIGALRM, handler)
-    time_limit = 3600  # 设置时间限制为1小时
+    time_limit = 30  # 设置时间限制为30秒
     signal.alarm(time_limit)
 
     repo_path = repo['path']
@@ -292,7 +292,6 @@ def process_repo(index, repo, setting=3, num_workers=1):
             graph.remove_edges_from(nx.selfloop_edges(graph))
             cycles = list(nx.simple_cycles(graph))
 
-            logging.warning(f"Found {len(cycles)} cycles in {repo_name}")
             for cycle in cycles:
                 if len(cycle) > 1:
                     for i in range(len(cycle) - 1):
@@ -324,6 +323,7 @@ def process_repo(index, repo, setting=3, num_workers=1):
         print(f"Timeout for {repo_name}")
         # 使用setting=2的方式处理并返回
         random.shuffle(repo_data_bak)
+        logging.warning(f"Timeout for {repo_name}, use setting=2 to process")
         return index, repo_data_bak
     finally:
         signal.alarm(0)  # 取消闹钟
