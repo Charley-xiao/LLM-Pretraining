@@ -250,7 +250,7 @@ def process_repo(index, repo, setting=3, num_workers=1):
         raise TimeoutError()
 
     signal.signal(signal.SIGALRM, handler)
-    time_limit = 60  # 设置时间限制为60秒
+    time_limit = 3600  # 设置时间限制为1小时
     signal.alarm(time_limit)
 
     repo_path = repo['path']
@@ -259,6 +259,8 @@ def process_repo(index, repo, setting=3, num_workers=1):
     try:
         print(f"Processing {repo_name} at {repo_path}")
         repo_data = repo_to_json(repo_path, repo_name, extensions, num_workers=num_workers)
+        # 备份repo_data
+        repo_data_bak = repo_data.copy()
         print(f"Processed {repo_name} with {len(repo_data)} files")
 
         if setting == 3:
@@ -320,7 +322,9 @@ def process_repo(index, repo, setting=3, num_workers=1):
         return index, repo_data
     except TimeoutError:
         print(f"Timeout for {repo_name}")
-        return index, []
+        # 使用setting=2的方式处理并返回
+        random.shuffle(repo_data_bak)
+        return index, repo_data_bak
     finally:
         signal.alarm(0)  # 取消闹钟
 
