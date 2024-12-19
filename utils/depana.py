@@ -89,7 +89,6 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
         # with open(cache_file, 'w') as f:
         #     json.dump(list(imports), f)
         #     print(f"Saved imports for {file_path} to {cache_file}")
-
         return imports
 
     def process_file(self, file):
@@ -185,6 +184,7 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         # with open(f'import_cache/{sha256_hash}.json', 'w') as f:
         # json.dump(list(imports), f)
         # print(f"Saved imports for {file_path} to import_cache/{sha256_hash}.json")
+
         return imports
 
     def process_file(self, file):
@@ -241,7 +241,7 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
 
         return None
 
-
+      
 def get_dependency_graph(repo_path, language, num_workers) -> nx.DiGraph:
     if language == 'python':
         analyzer = PythonDependencyAnalyzer(repo_path, num_workers)
