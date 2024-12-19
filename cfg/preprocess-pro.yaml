@@ -4,7 +4,7 @@ truncation: True
 
 use_cache: False
 setting: 3
-data_file: "data/data_3-pro.json"
+data_file: "data/data_3-kaifa-more.json"
 
 repos_dir: "repos"
 ignore_preset_repos: False
@@ -411,11 +411,7 @@ repos:
       name: "jieba"
       path: "jieba"
       extensions: [".py"]
-  - langchain:
-      url: "https://github.com/langchain-ai/langchain"
-      name: "langchain"
-      path: "langchain"
-      extensions: [".py"]
+
   - timm:
       url: "https://github.com/guigrpa/timm"
       name: "timm"
@@ -846,11 +842,7 @@ repos:
       name: "google-api-python-client"
       path: "google-api-python-client"
       extensions: [".py"]
-  - pre-commit:
-      url: "https://github.com/pre-commit/pre-commit"
-      name: "pre-commit"
-      path: "pre-commit"
-      extensions: [".py"]
+
   - pyarrow:
       url: "https://github.com/conda-forge/pyarrow-feedstock"
       name: "pyarrow"
@@ -1841,11 +1833,6 @@ repos:
       name: "cmake"
       path: "cmake"
       extensions: [".py"]
-  - pre-commit :
-      url: "https://github.com/pre-commit/pre-commit"
-      name: "pre-commit "
-      path: "pre-commit "
-      extensions: [".py"]
   - bcrypt:
       url: "https://github.com/pyca/bcrypt"
       name: "bcrypt"
@@ -2601,11 +2588,6 @@ repos:
       name: "pywinauto"
       path: "pywinauto"
       extensions: [".py"]
-  - fire:
-      url: "https://github.com/ZTO-Express/fire"
-      name: "fire"
-      path: "fire"
-      extensions: [".py"]
   - yarl:
       url: "https://github.com/aio-libs/yarl"
       name: "yarl"
@@ -2626,9 +2608,9 @@ repos:
       name: "imgaug"
       path: "imgaug"
       extensions: [".py"]
-output_file: "data/data_3-pro.json"
+output_file: "data/data_3-kaifa-more.json"
 
-output_tokenized: "data/data_3_tokenized-pro.json"
-output_mmap: "data/data_3-pro.mmap"
-num_cpus: 100
-num_workers: 150
+output_tokenized: "data/data__tokenized_1-kaifa.json"
+output_mmap: "data/data_1-kaifa.mmap"
+num_cpus: 130
+num_workers: 8

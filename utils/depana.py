@@ -5,10 +5,10 @@ from concurrent.futures.thread import ThreadPoolExecutor
 import networkx as nx
 import matplotlib.pyplot as plt
 import re
-import pickle 
+import pickle
 from concurrent.futures import ProcessPoolExecutor, as_completed
-import hashlib 
-import json 
+import hashlib
+import json
 
 
 class DependencyAnalyzer:
@@ -20,19 +20,19 @@ class DependencyAnalyzer:
     def get_files(self):
         """ Recursively collect all files in the repository """
         raise NotImplementedError
-    
+
     def parse_imports(self, file_path):
         """ Parse import statements from a file using AST """
         raise NotImplementedError
-    
+
     def build_dependency_graph(self):
         """ Build a dependency graph for the files in the repository """
         raise NotImplementedError
-    
+
     def find_file_by_module(self, module_name):
         """ Helper function to map import to a file in the repo """
         raise NotImplementedError
-    
+
     def visualize_dependency_graph(self, save_path=None):
         """ Visualize the dependency graph using networkx and matplotlib """
         plt.figure(figsize=(32, 24))
@@ -62,34 +62,33 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
     def parse_imports(self, file_path):
         """Parse import statements from a Python file using regular expressions"""
         print(f"Parsing file {file_path}")
-        
+
         cache_dir = 'import_cache'
         cache_file = f'{cache_dir}/{hashlib.sha256(file_path.encode("utf-8")).hexdigest()}.json'
         if os.path.exists(cache_file):
             print(f"Found cached imports for {file_path}. Loading from cache.")
             with open(cache_file, 'r') as f:
                 return set(json.load(f))
-        
+
         if not os.path.exists(file_path):
             print(f"File {file_path} does not exist. Returning empty set.")
             return set()
-        
+
         with open(file_path, "r", encoding="utf-8", errors='ignore') as file:
             file_content = file.read()
-        
+
         import_pattern = r'^\s*(?:import\s+([\w\.]+)|from\s+([\w\.]+)\s+import)'
         matches = re.findall(import_pattern, file_content, re.MULTILINE)
-        
+
         imports = set(filter(None, [match[0] or match[1] for match in matches]))
         print(f"Found {len(imports)} imports in {file_path}")
         print(imports)
-        
+
         if not os.path.exists(cache_dir):
             os.makedirs(cache_dir)
         # with open(cache_file, 'w') as f:
         #     json.dump(list(imports), f)
         #     print(f"Saved imports for {file_path} to {cache_file}")
-        
         return imports
 
     def process_file(self, file):
@@ -113,16 +112,25 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
         nodes = []
         edges = []
 
-        with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
-            future_to_file = {executor.submit(self.process_file, file): file for file in python_files}
+        # with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
+        #     future_to_file = {executor.submit(self.process_file, file): file for file in python_files}
 
-            for future in as_completed(future_to_file):
-                try:
-                    file_node, file_edges = future.result()
-                    nodes.append(file_node)
-                    edges.extend(file_edges)
-                except Exception as e:
-                    print(f"Error processing file {future_to_file[future]}: {e}")
+        #     for future in as_completed(future_to_file):
+        #         try:
+        #             file_node, file_edges = future.result()
+        #             nodes.append(file_node)
+        #             edges.extend(file_edges)
+        #         except Exception as e:
+        #             print(f"Error processing file {future_to_file[future]}: {e}")
+
+        for file in python_files:
+            try:
+                file_node, file_edges = self.process_file(file)
+                nodes.append(file_node)
+                edges.extend(file_edges)
+            except Exception as e:
+                print(f"处理文件 {file} 时出错: {e}")
+
 
         # Build the graph
         self.graph.add_nodes_from(nodes)
@@ -135,7 +143,7 @@ class PythonDependencyAnalyzer(DependencyAnalyzer):
             if module_path in files:
                 return os.path.relpath(os.path.join(root, module_path), self.repo_path)
         return None
-    
+
 
 class JavaDependencyAnalyzer(DependencyAnalyzer):
     def __init__(self, repo_path, num_workers):
@@ -158,8 +166,12 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
             print(f"Found cached imports for {file_path}. Loading from cache.")
             with open(f'import_cache/{hashlib.sha256(file_path.encode("utf-8")).hexdigest()}.json', 'r') as f:
                 return set(json.load(f))
+
+        from itertools import islice
+
+        # Read the first 100 lines of the file，降低内存占用
         with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
-            file_content = file.read()
+            file_content = ''.join(islice(file, 100))
 
         # Use regex to extract import statements
         file_content = file_content.split('public class')[0]  # Ignore everything after the class definition
@@ -170,8 +182,9 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         if not os.path.exists('import_cache'):
             os.makedirs('import_cache')
         # with open(f'import_cache/{sha256_hash}.json', 'w') as f:
-            # json.dump(list(imports), f)
-            # print(f"Saved imports for {file_path} to import_cache/{sha256_hash}.json")
+        # json.dump(list(imports), f)
+        # print(f"Saved imports for {file_path} to import_cache/{sha256_hash}.json")
+
         return imports
 
     def process_file(self, file):
@@ -195,7 +208,7 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
         nodes = []
         edges = []
 
-        with ThreadPoolExecutor(max_workers=self.num_workers) as executor:
+        with ProcessPoolExecutor(max_workers=self.num_workers) as executor:
             # Submit tasks to process each file
             future_to_file = {executor.submit(self.process_file, file): file for file in java_files}
 
@@ -206,6 +219,14 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
                     edges.extend(file_edges)
                 except Exception as e:
                     print(f"Error processing file {future_to_file[future]}: {e}")
+
+        # for file in java_files:
+        #     try:
+        #         file_node, file_edges = self.process_file(file)
+        #         nodes.append(file_node)
+        #         edges.extend(file_edges)
+        #     except Exception as e:
+        #         print(f"处理文件 {file} 时出错: {e}")
 
         # Build the graph
         self.graph.add_nodes_from(nodes)
@@ -219,8 +240,8 @@ class JavaDependencyAnalyzer(DependencyAnalyzer):
                 return os.path.relpath(os.path.join(root, module_path), self.repo_path)
 
         return None
-    
 
+      
 def get_dependency_graph(repo_path, language, num_workers) -> nx.DiGraph:
     if language == 'python':
         analyzer = PythonDependencyAnalyzer(repo_path, num_workers)
@@ -228,7 +249,7 @@ def get_dependency_graph(repo_path, language, num_workers) -> nx.DiGraph:
         analyzer = JavaDependencyAnalyzer(repo_path, num_workers)
     else:
         raise ValueError("Unsupported language for dependency analysis")
-    
+
     analyzer.build_dependency_graph()
     return analyzer.graph
 
